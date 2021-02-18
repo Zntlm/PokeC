@@ -368,3 +368,9 @@
 	<SDL2/SDL_ttf.h>
 	<mysql/mysql.h>
 
+1610978170 source:/home/user/Bureau/PokeC/ZVersion/MAP/map/main.cpp
+	<exception>
+	<string>
+	<iostream>
+	<SDL.h>
+

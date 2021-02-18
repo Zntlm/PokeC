@@ -84,6 +84,7 @@ int potionDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfacePotion, SDL_Te
 int loadDiplayPotion (SDL_Surface ** surfacePotion, SDL_Texture ** texturePotion, SDL_Renderer ** renderer, SDL_Rect * rectanglePotion);
 int loadDiplayCurseurPotion (SDL_Surface ** surfaceCurseurPotion, SDL_Texture ** textureCurseurPotion, SDL_Renderer ** renderer, SDL_Rect * rectangleCurseurPotion);
 int updateMainPotionDisplay (SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion, SDL_Renderer ** renderer, SDL_Rect * rectanglePotion, SDL_Rect * rectangleCurseurPotion, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome);
+//int manageEventPotion (renderer, surfacePotion, texturePotion, &rectanglePotion, surfaceCurseurPotion, textureCurseurPotion, &rectangleCurseurPotion, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome);
 int managePotionDisplay (SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Texture ** textureHome);
 void closePotionDisplay (SDL_Surface ** surfacePotion, SDL_Texture ** texturePotion, SDL_Surface ** surfaceCurseurPotion, SDL_Texture ** textureCurseurPotion);
 
@@ -92,6 +93,7 @@ int reminderDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfaceReminder, SD
 int loadDiplayCurseurReminder (SDL_Surface ** surfaceCurseurReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleCurseurReminder);
 int loadDiplayReminder (SDL_Surface ** surfaceReminder, SDL_Texture ** textureReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder);
 int updateMainReminderDisplay (SDL_Texture ** textureReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder, SDL_Rect * rectangleCurseurReminder, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome);
+//int manageEventReminder (renderer, surfaceReminder, textureReminder, &rectangleReminder, surfaceCurseurReminder, textureCurseurReminder, &rectangleCurseurReminder, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome);
 int manageReminderDisplay (SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Texture ** textureHome);
 void closeReminderDisplay (SDL_Surface ** surfaceReminder, SDL_Texture ** textureReminder, SDL_Surface ** surfaceCurseurReminder, SDL_Texture ** textureCurseurReminder);
 
@@ -100,6 +102,7 @@ int pokeballsDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfacePokeballs, 
 int loadDiplayCurseurPokeballs (SDL_Surface ** surfaceCurseurPokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectangleCurseurPokeballs);
 int loadDiplayPokeballs (SDL_Surface ** surfacePokeballs, SDL_Texture ** texturePokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs);
 int updateMainPokeballsDisplay (SDL_Texture ** texturePokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs, SDL_Rect * rectangleCurseurPokeballs, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome);
+//int manageEventPokeballs (renderer, surfacePokeballs, texturePotion, &rectanglePokeballs, surfaceCurseurPokeballs, textureCurseurPokeballs, &rectangleCurseurPokeballs, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome);
 int managePokeballsDisplay (SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Texture ** textureHome);
 void closePokeballsDisplay (SDL_Surface ** surfacePokeballs, SDL_Texture ** texturePokeballs, SDL_Surface ** surfaceCurseurPokeballs, SDL_Texture ** textureCurseurPokeballs);
 
@@ -1633,7 +1636,7 @@ int loadDiplayPotion (SDL_Surface ** surfacePotion, SDL_Texture ** texturePotion
   return 0;
 }
 
-//
+//int manageEventPotion (renderer, surfacePotion, texturePotion, &rectanglePotion, surfaceCurseurPotion, textureCurseurPotion, &rectangleCurseurPotion, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome)
 
 
 // refresh potion
@@ -1737,10 +1740,11 @@ int loadDiplayReminder (SDL_Surface ** surfaceReminder, SDL_Texture ** textureRe
   return 0;
 }
 
-//
+//int manageEventReminder (renderer, surfaceReminder, textureReminder, &rectangleReminder, surfaceCurseurReminder, textureCurseurReminder, &rectangleCurseurReminder, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome)
 
 
-// refresh potion
+
+// refresh reminder
 int updateMainReminderDisplay (SDL_Texture ** textureReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder, SDL_Rect * rectangleCurseurReminder, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
 
   SDL_RenderClear(*renderer);
@@ -1840,7 +1844,8 @@ int loadDiplayPokeballs (SDL_Surface ** surfacePokeballs, SDL_Texture ** texture
   return 0;
 }
 
-//
+//int manageEventPokeballs (renderer, surfacePokeballs, texturePotion, &rectanglePokeballs, surfaceCurseurPokeballs, textureCurseurPokeballs, &rectangleCurseurPokeballs, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome)
+
 
 
 // refresh Pokeballs
