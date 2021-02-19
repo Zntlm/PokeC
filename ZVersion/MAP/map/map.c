@@ -84,7 +84,7 @@ int potionDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfacePotion, SDL_Te
 int loadDiplayPotion (SDL_Surface ** surfacePotion, SDL_Texture ** texturePotion, SDL_Renderer ** renderer, SDL_Rect * rectanglePotion);
 int loadDiplayCurseurPotion (SDL_Surface ** surfaceCurseurPotion, SDL_Texture ** textureCurseurPotion, SDL_Renderer ** renderer, SDL_Rect * rectangleCurseurPotion);
 int updateMainPotionDisplay (SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion, SDL_Renderer ** renderer, SDL_Rect * rectanglePotion, SDL_Rect * rectangleCurseurPotion, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome);
-//int manageEventPotion (renderer, surfacePotion, texturePotion, &rectanglePotion, surfaceCurseurPotion, textureCurseurPotion, &rectangleCurseurPotion, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome);
+int manageEventPotion (SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion, SDL_Renderer ** renderer, SDL_Rect * rectanglePotion, SDL_Rect * rectangleCurseurPotion, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome);
 int managePotionDisplay (SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Texture ** textureHome);
 void closePotionDisplay (SDL_Surface ** surfacePotion, SDL_Texture ** texturePotion, SDL_Surface ** surfaceCurseurPotion, SDL_Texture ** textureCurseurPotion);
 
@@ -1492,14 +1492,12 @@ int manageEventPc (SDL_Renderer ** renderer, SDL_Surface ** surfacePc, SDL_Textu
             //Choose the option
             case SDLK_o:
                 switch ((*rectangleCurseurPc).x){
-                    case 325:
-                                switch ((*rectangleCurseurPc).y){
-                                case 578:
-                                managePotionDisplay (renderer, texturePlayer,textureHome);
-                                if (updateMainPotionDisplay (texturePotion, textureCurseurPotion, renderer, rectanglePotion, rectangleCurseurPotion, texturePlayer, rectanglePlayer, textureHome, rectangleHome))
-                                return 1;
-                                break;
-                                }
+                    case 625:
+                      switch ((*rectangleCurseurPc).y){
+                        case 382:
+	                        managePotionDisplay (renderer, texturePlayer,textureHome);
+                        break;
+                      }
                     break;
                 }
             break;
@@ -1588,16 +1586,8 @@ int potionDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfacePotion, SDL_Te
   SDL_Rect rectanglePotion;
   SDL_Rect rectangleCurseurPotion;
   SDL_Rect rectanglePlayer;
-  (rectanglePlayer).w=60;
-  (rectanglePlayer).h=60;
-  (rectanglePlayer).x = 220+60*9;
-  (rectanglePlayer).y = 90+60*11;
 
   SDL_Rect rectangleHome;
-  (rectangleHome).w=1200;
-  (rectangleHome).h=720;
-  (rectangleHome).x = (1600-(rectangleHome).w)/2;
-  (rectangleHome).y = (900-(rectangleHome).h)/2;
 
   if (loadDiplayPotion (surfacePotion, texturePotion, renderer, &rectanglePotion))
     return 1;
@@ -1605,17 +1595,53 @@ int potionDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfacePotion, SDL_Te
   if (loadDiplayCurseurPotion (surfaceCurseurPotion, textureCurseurPotion, renderer, &rectangleCurseurPotion))
     return 1;
 
-  //if (manageEventPotion (renderer, surfacePotion, texturePotion, &rectanglePotion, surfaceCurseurPotion, textureCurseurPotion, &rectangleCurseurPotion, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome))
-  //  return 1;
+  if (manageEventPotion (texturePotion, textureCurseurPotion, renderer, &rectanglePotion, &rectangleCurseurPotion, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome))
+    return 1;
 
   return 0;
+}
+
+int manageEventPotion (SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion, SDL_Renderer ** renderer, SDL_Rect * rectanglePotion, SDL_Rect * rectangleCurseurPotion, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
+
+	SDL_bool programLaunched = SDL_TRUE;
+	//int nextCase;
+
+	// event
+	while (programLaunched) {
+
+		SDL_Event event;
+
+		while (SDL_PollEvent(&event)) {
+
+			switch (event.type) {
+
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+
+						case SDLK_ESCAPE:
+							programLaunched = SDL_FALSE; //Close the pc
+							break;
+					}
+					if (updateMainPotionDisplay (texturePotion, textureCurseurPotion, renderer, rectanglePotion, rectangleCurseurPotion, texturePlayer, rectanglePlayer, textureHome, rectangleHome))
+								return 1;
+					break;
+
+				case SDL_QUIT:
+					programLaunched = SDL_FALSE;
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
+	return 0;
 }
 
 // load and display curseur
 int loadDiplayCurseurPotion (SDL_Surface ** surfaceCurseurPotion, SDL_Texture ** textureCurseurPotion, SDL_Renderer ** renderer, SDL_Rect * rectangleCurseurPotion) {
   //CURSEUR
   // load curseur
-  printf("kiiii\n");
   if (loadBMP("../img/curseur.bmp", surfaceCurseurPotion))
     return 1;
   if (displayAll (textureCurseurPotion, surfaceCurseurPotion, rectangleCurseurPotion, renderer, 325, 480, 25, 25))
@@ -1628,16 +1654,12 @@ int loadDiplayCurseurPotion (SDL_Surface ** surfaceCurseurPotion, SDL_Texture **
 int loadDiplayPotion (SDL_Surface ** surfacePotion, SDL_Texture ** texturePotion, SDL_Renderer ** renderer, SDL_Rect * rectanglePotion) {
 
   // load pcPotion
-  printf("kooo \n");
   if (loadBMP("../img/pcPotion.bmp", surfacePotion))
     return 1;
   if (displayAll (texturePotion, surfacePotion, rectanglePotion, renderer, 275, 100, 950, 600))
     return 1;
   return 0;
 }
-
-//int manageEventPotion (renderer, surfacePotion, texturePotion, &rectanglePotion, surfaceCurseurPotion, textureCurseurPotion, &rectangleCurseurPotion, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome)
-
 
 // refresh potion
 int updateMainPotionDisplay (SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion, SDL_Renderer ** renderer, SDL_Rect * rectanglePotion, SDL_Rect * rectangleCurseurPotion, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
@@ -1652,7 +1674,6 @@ int updateMainPotionDisplay (SDL_Texture ** texturePotion, SDL_Texture ** textur
     return 1;
   if (updateRenderer(textureCurseurPotion, renderer, rectangleCurseurPotion))
     return 1;
-
 
   return 0;
 }
@@ -1845,8 +1866,6 @@ int loadDiplayPokeballs (SDL_Surface ** surfacePokeballs, SDL_Texture ** texture
 }
 
 //int manageEventPokeballs (renderer, surfacePokeballs, texturePotion, &rectanglePokeballs, surfaceCurseurPokeballs, textureCurseurPokeballs, &rectangleCurseurPokeballs, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome)
-
-
 
 // refresh Pokeballs
 int updateMainPokeballsDisplay (SDL_Texture ** texturePokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs, SDL_Rect * rectangleCurseurPokeballs, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
