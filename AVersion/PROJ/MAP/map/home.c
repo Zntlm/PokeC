@@ -1,25 +1,25 @@
 #include "home.h"
 
 int MatriceHome(int x, int y){
-	int matriceHomeInt[12][25]={
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1},
-		{1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,1,1,0,0,1},
-		{0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1},
-		{0,0,0,0,1,1,1,1,1,1,0,0,1,0,0,0,1,1,1,1},
-		{1,1,1,0,0,0,1,0,0,0,0,0,1,1,0,0,0,1,0,0},
-		{1,1,1,0,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,0},
-		{1,0,0,1,1,2,1,2,1,1,1,1,1,1,0,0,0,0,0,0},
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
-		{0,0,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1,1,0,0},
-		{0,0,0,1,1,0,0,1,1,3,1,1,0,0,1,1,1,1,1,0}
-		};
-	return matriceHomeInt[y/60][(x-200)/60];
+  int matriceHomeInt[12][20]={
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,1,1,1,1,0,0,0,0,1,1,1,0,0,0,1,1,0,0,0},
+    {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0},
+    {0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0},
+    {0,0,0,0,1,1,1,1,1,1,0,0,1,0,0,0,1,1,1,0},
+    {0,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0},
+    {0,1,1,0,0,2,0,2,0,1,1,1,1,1,0,0,0,0,0,0},
+    {0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0},
+    {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+    {0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+    {0,0,0,1,1,0,0,1,1,3,1,1,0,0,1,1,1,1,1,0}
+    };
+  return matriceHomeInt[(y-90)/60][(x-200)/60];
 }
 
 //Display home
-int homeDisplay(SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Surface ** surfaceHome, SDL_Texture ** textureHome, SDL_Surface ** surfacePc, SDL_Texture ** texturePc){
+int homeDisplay(MYSQL * mysql, TTF_Font ** font, Config config, SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Surface ** surfaceHome, SDL_Texture ** textureHome, SDL_Surface ** surfacePc, SDL_Texture ** texturePc){
 
   SDL_Rect rectangleHome;
   SDL_Rect rectanglePlayer;
@@ -38,8 +38,10 @@ int homeDisplay(SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Surf
   if (displayPlayerHome(renderer, texturePlayer, &rectanglePlayer))
     return 1;
 
-  if (manageEventHomeGame(renderer,surfaceHome,textureHome,&rectangleHome,texturePlayer,&rectanglePlayer,texturePc, &rectanglePc))
+  if (manageEventHomeGame(mysql, font, config, renderer,surfaceHome,textureHome,&rectangleHome,texturePlayer,&rectanglePlayer,texturePc, &rectanglePc))
     return 1;
+
+	SDL_RenderPresent(*renderer);
 
   return 0;
 }
@@ -51,12 +53,14 @@ int displayPlayerHome (SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, S
     return 1;
 (*rectanglePlayer).w = 60;
 (*rectanglePlayer).h = 60;
-(*rectanglePlayer).x = 200+60*9;
-(*rectanglePlayer).y = 60*11;
+(*rectanglePlayer).x = 220+60*9;
+(*rectanglePlayer).y = 90+60*11;
 
   // display texture
   if (updateRenderer(texturePlayer, renderer, rectanglePlayer))
     return 1;
+
+	SDL_RenderPresent(*renderer);
 
   return 0;
 }
@@ -77,7 +81,7 @@ int loadDiplayHome (SDL_Renderer ** renderer, SDL_Surface ** surfaceHome, SDL_Te
     return 1;
 
   (*rectangleHome).w = 1200;
-  (*rectangleHome).h = 900;
+  (*rectangleHome).h = 720;
   (*rectangleHome).x = (1600-(*rectangleHome).w)/2;
   (*rectangleHome).y = (900-(*rectangleHome).h)/2;
 
@@ -85,10 +89,12 @@ int loadDiplayHome (SDL_Renderer ** renderer, SDL_Surface ** surfaceHome, SDL_Te
   if (updateRenderer(textureHome, renderer, rectangleHome))
     return 1;
 
+	SDL_RenderPresent(*renderer);
+
   return 0;
 }
 
-int manageEventHomeGame (SDL_Renderer ** renderer, SDL_Surface ** surfaceHome, SDL_Texture ** textureHome, SDL_Rect * rectangleHome, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** texturePc, SDL_Rect * rectanglePc) {
+int manageEventHomeGame (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Renderer ** renderer, SDL_Surface ** surfaceHome, SDL_Texture ** textureHome, SDL_Rect * rectangleHome, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** texturePc, SDL_Rect * rectanglePc) {
 
   SDL_bool programLaunched = SDL_TRUE;
   int nextCase;
@@ -103,72 +109,52 @@ int manageEventHomeGame (SDL_Renderer ** renderer, SDL_Surface ** surfaceHome, S
       switch (event.type) {
 
         case SDL_KEYDOWN:
-          switch (event.key.keysym.sym) {
-
-            case SDLK_ESCAPE:
-              programLaunched = SDL_FALSE; //Close Home
-              break;
-
-            case SDLK_UP://Vers le haut
-              nextCase = MatriceHome((*rectanglePlayer).x, (*rectanglePlayer).y-60);
-              if (nextCase == 1){
-                (*rectanglePlayer).y -= 60;
-                if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
-                  return 1;
-              }else if(nextCase==2){
-                    managePcDisplay(renderer);
-              }else if(nextCase==3){
-                   return 0;
-              }
-              break;
-
-            case SDLK_DOWN://Vers le bas
-              nextCase = MatriceHome((*rectanglePlayer).x, (*rectanglePlayer).y+60);
-              if (nextCase == 1){
-                (*rectanglePlayer).y += 60;
-                if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
-                  return 1;
-              }else if(nextCase==2){
-                    managePcDisplay(renderer);
-              }else if(nextCase==3){
-                   return 0;
-              }
-              break;
-
-            case SDLK_RIGHT://Aller à droite
-              nextCase = MatriceHome((*rectanglePlayer).x+60, (*rectanglePlayer).y);
-              if (nextCase == 1){
-                (*rectanglePlayer).x += 60;
-                if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
-                  return 1;
-              }else if (nextCase==2){
-                        managePcDisplay(renderer);
-              }else if(nextCase==3){
-                   return 0;
-              }
-              break;
-
-            case SDLK_LEFT: //Go to the left
-              nextCase = MatriceHome((*rectanglePlayer).x-60, (*rectanglePlayer).y);
-              if (nextCase == 1){
-                (*rectanglePlayer).x -= 60;
-                if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
-                  return 1;
-              }else if(nextCase==2){
-                    managePcDisplay(renderer);
-              }else if(nextCase==3){
-                   return 0;
-              }
-              break;
-
-            case SDLK_SPACE: //open menu
-              manageMenuDisplay (textureHome, texturePlayer, renderer, rectangleHome, rectanglePlayer);
+          if (event.key.keysym.sym == config.escape) {
+            programLaunched = SDL_FALSE; //Close Home
+          } else if (event.key.keysym.sym == config.up) {
+            nextCase = MatriceHome((*rectanglePlayer).x, (*rectanglePlayer).y-60);
+            if (nextCase == 1){
+              (*rectanglePlayer).y -= 60;
               if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
                 return 1;
-              break;
-
-            default:
-              break;
+            }else if(nextCase==2){
+                  managePcDisplay(mysql, font, config, renderer, texturePlayer, textureHome);
+            }else if(nextCase==3){
+                 return 0;
+            }
+          } else if (event.key.keysym.sym == config.down) {
+            nextCase = MatriceHome((*rectanglePlayer).x, (*rectanglePlayer).y+60);
+            if (nextCase == 1){
+              (*rectanglePlayer).y += 60;
+              if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
+                return 1;
+            }else if(nextCase==2){
+              managePcDisplay(mysql, font, config, renderer, texturePlayer, textureHome);
+            }else if(nextCase==3){
+                 return 0;
+            }
+          } else if (event.key.keysym.sym == config.right) {
+            nextCase = MatriceHome((*rectanglePlayer).x+60, (*rectanglePlayer).y);
+            if (nextCase == 1){
+              (*rectanglePlayer).x += 60;
+              if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
+                return 1;
+            }else if (nextCase==2){
+                managePcDisplay(mysql, font, config, renderer, texturePlayer, textureHome);
+            }else if(nextCase==3){
+                 return 0;
+            }
+          } else if (event.key.keysym.sym == config.left) {
+            nextCase = MatriceHome((*rectanglePlayer).x-60, (*rectanglePlayer).y);
+            if (nextCase == 1){
+              (*rectanglePlayer).x -= 60;
+              if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
+                return 1;
+            }else if(nextCase==2){
+              managePcDisplay(mysql, font, config, renderer, texturePlayer, textureHome);
+            }else if(nextCase==3){
+                 return 0;
+            }
           }
           break;
 
@@ -196,21 +182,26 @@ int updateMainHomeDisplay (SDL_Renderer ** renderer, SDL_Texture ** textureHome,
   if (updateRenderer(texturePlayer, renderer, rectanglePlayer))
     return 1;
 
+	SDL_RenderPresent(*renderer);
+
   return 0;
 }
 
 // manage error in homeDisplay
-int manageHomeDisplay (Config config, SDL_Renderer ** renderer, SDL_Texture ** texturePlayer) {
+int manageHomeDisplay (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Renderer ** renderer, SDL_Texture ** texturePlayer) {
 
   SDL_Surface * surfaceHome = NULL;
   SDL_Texture * textureHome = NULL;
   SDL_Surface * surfacePc = NULL;
   SDL_Texture * texturePc = NULL;
-  int home = homeDisplay(renderer, texturePlayer, &surfaceHome, &textureHome, &surfacePc, &texturePc);
+  int home = homeDisplay(mysql, font, config, renderer, texturePlayer, &surfaceHome, &textureHome, &surfacePc, &texturePc);
 
   closeHomeDisplay(&surfaceHome, &textureHome, &surfacePc, &texturePc);
 
-  return home;
+  if (home)
+    return 1;
+
+  return 0;
 }
 
 // free surface and texture used in homeDisplay

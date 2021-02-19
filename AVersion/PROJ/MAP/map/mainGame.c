@@ -97,7 +97,7 @@ int manageEventMainGame (Config config, TTF_Font ** font, SDL_Renderer ** render
 									return 1;
 							}
 						}else if(nextCase==6){
-							if (manageHomeDisplay(config, renderer, texturePlayer))
+							if (manageHomeDisplay(mysql, font, config, renderer, texturePlayer))
 								return 1;
 						}
 
@@ -111,7 +111,7 @@ int manageEventMainGame (Config config, TTF_Font ** font, SDL_Renderer ** render
 									return 1;
 							}
 						}else if(nextCase==6){
-							if (manageHomeDisplay(config, renderer, texturePlayer))
+							if (manageHomeDisplay(mysql, font, config, renderer, texturePlayer))
 								return 1;
 						}
 
@@ -125,7 +125,7 @@ int manageEventMainGame (Config config, TTF_Font ** font, SDL_Renderer ** render
 									return 1;
 							}
 						}else if(nextCase==6){
-							if (manageHomeDisplay(config, renderer, texturePlayer))
+							if (manageHomeDisplay(mysql, font, config, renderer, texturePlayer))
 								return 1;
 						}
 
@@ -139,7 +139,7 @@ int manageEventMainGame (Config config, TTF_Font ** font, SDL_Renderer ** render
 									return 1;
 							}
 						}else if(nextCase==6){
-							if (manageHomeDisplay(config, renderer, texturePlayer))
+							if (manageHomeDisplay(mysql, font, config, renderer, texturePlayer))
 								return 1;
 						}
 
