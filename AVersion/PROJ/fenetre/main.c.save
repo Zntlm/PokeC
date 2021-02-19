@@ -1,0 +1,269 @@
+#include <SDL.h>
+#include <stdio.h>
+#include <mysql.h>
+
+#define WINDOW_WIDTH 1600
+#define WINDOW_HEIGHT 900
+
+void SDL_PrintError (const char * message);
+void MySQL_PrintError (const char * message, MYSQL mysql);
+void CloseSDLMySQL (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql);
+void version ();
+int connectDataBase (MYSQL * mysql);
+int initSDL (MYSQL * mysql);
+int createWindow (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql);
+int createRenderer (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql);
+int loadBMP (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql, const char * img, SDL_Surface ** surface);
+int createTexture (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql, SDL_Surface ** surface);
+int loadTexture (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql, int x, int y, SDL_Rect * rectangle);
+int updateRenderer (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql, SDL_Rect * rectangle);
+
+int main (int argc, char ** argv) {
+
+	SDL_Window * window = NULL;
+	SDL_Renderer * renderer = NULL;
+	SDL_Texture * texture = NULL;
+	SDL_Rect rectangle;
+	SDL_bool programLaunched = SDL_TRUE;
+	SDL_Surface * home = NULL;
+	SDL_Surface * exit = NULL;
+	SDL_Surface * pointer = NULL;
+	MYSQL mysql;
+
+	// display version SDL and MySQL
+	version();
+
+	// init MySQL and connect database
+	if (connectDataBase(&mysql))
+		return 0;
+
+	// start SDL
+	if (initSDL(&mysql))
+		return 0;
+
+	// create Window
+	if (createWindow(&texture, &renderer, &window, &mysql))
+		return 0;
+
+	// createRenderer
+	if (createRenderer(&texture, &renderer, &window, &mysql))
+		return 0;
+
+	// load home page
+	if (loadBMP(&texture, &renderer, &window, &mysql, "img/Home.bmp", &home))
+		return 0;
+
+	// create texture
+	if (createTexture(&texture, &renderer, &window, &mysql, &home))
+		return 0;
+
+	// load texture
+	if (loadTexture(&texture, &renderer, &window, &mysql, (WINDOW_WIDTH - (*home).w)/2, , &rectangle))
+		return 0;
+
+	// display texture
+	if (updateRenderer(&texture, &renderer, &window, &mysql, &rectangle))
+		return 0;
+
+	// load pointer
+	if (loadBMP(&texture, &renderer, &window, &mysql, "img/pointer.bmp", &pointer))
+		return 0;
+
+	// create texture
+	if (createTexture(&texture, &renderer, &window, &mysql, &pointer))
+		return 0;
+
+	// load texture
+	if (loadTexture(&texture, &renderer, &window, &mysql, (WINDOW_WIDTH - (*pointer).w)/2, (WINDOW_HEIGHT - (*pointer).h)/2, &rectangle))
+		return 0;
+
+	// display texture
+	if (updateRenderer(&texture, &renderer, &window, &mysql, &rectangle))
+		return 0;
+
+	// event
+	while (programLaunched) {
+
+		SDL_Event event;
+
+		while (SDL_PollEvent(&event)) {
+
+			switch (event.type) {
+
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+
+						case SDLK_ESCAPE:
+							programLaunched = SDL_FALSE;
+							break;
+
+						default:
+							continue;
+					}
+
+				case SDL_QUIT:
+					programLaunched = SDL_FALSE;
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
+
+	// close SDL and database
+	CloseSDLMySQL(&texture, &renderer, &window, &mysql);
+
+	return 0;
+}
+
+// laod BMP
+int loadBMP (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql, const char * img, SDL_Surface ** surface) {
+
+	// load img
+	*surface = SDL_LoadBMP(img);
+	if (*surface == NULL) {
+		SDL_PrintError("Error loading image");
+		CloseSDLMySQL(texture, renderer, window, mysql);
+		return 1;
+	}
+
+	return 0;
+}
+
+// create texture
+int createTexture (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql, SDL_Surface ** surface) {
+
+	*texture = SDL_CreateTextureFromSurface(*renderer, *surface);
+	if (*texture == NULL) {
+		SDL_PrintError("Error create texture");
+		CloseSDLMySQL(texture, renderer, window, mysql);
+		return 1;
+	}
+
+	return 0;
+}
+
+// load texture
+int loadTexture (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql, int x, int y, SDL_Rect * rectangle) {
+
+	// load texture
+	if(SDL_QueryTexture(*texture, NULL, NULL, &(*rectangle).w, &(*rectangle).h) != 0){
+		SDL_PrintError("Error loading texture");
+		CloseSDLMySQL(texture, renderer, window, mysql);
+		return 1;
+	}
+
+	// define texture poss
+	(*rectangle).x = x;
+	(*rectangle).y = y;
+
+	return 0;
+}
+
+// reload renderer
+int updateRenderer (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql, SDL_Rect * rectangle) {
+
+	// copy texture
+	if(SDL_RenderCopy(*renderer, *texture, NULL, rectangle)){
+		SDL_PrintError("Error display texture");
+		CloseSDLMySQL(texture, renderer, window, mysql);
+		return 1;
+	}
+
+	// update renderer
+	SDL_RenderPresent(*renderer);
+
+	return 0;
+}
+
+// start SDL
+int initSDL (MYSQL * mysql) {
+
+	// init SDL
+	if (SDL_Init(SDL_INIT_VIDEO) == -1) {
+		SDL_PrintError("Error init SDL");
+		mysql_close(mysql);
+		return 1;
+	}
+
+	return 0;
+}
+
+// create renderer
+int createRenderer (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql) {
+
+	*renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_SOFTWARE);
+	if (*renderer == NULL) {
+		SDL_PrintError("Error create renderer");
+		CloseSDLMySQL(texture, renderer, window, mysql);
+		return 1;
+	}
+
+	return 0;
+}
+
+// create window
+int createWindow (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql) {
+
+	*window = SDL_CreateWindow("pokemon 20/20", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_FULLSCREEN);
+	if (*window == NULL) {
+		SDL_PrintError("Error create window");
+		CloseSDLMySQL(texture, renderer, window, mysql);
+		return 1;
+	}
+
+	return 0;
+}
+
+// init MySQL and connect database
+int connectDataBase (MYSQL * mysql) {
+
+	// init MySQL
+	if (!mysql_init(mysql)) {
+		MySQL_PrintError("Error init MySQL", *mysql);
+		return 1;
+	}
+
+	// connect database
+	if (!mysql_real_connect(mysql, "localhost", "partiel", "azerty", "pokemon", 80, NULL, 0)) {
+		MySQL_PrintError("Error connect database", *mysql);
+		mysql_close(mysql);
+		return 1;
+	}
+	return 0;
+}
+
+// display error SDL
+void SDL_PrintError(const char * message) {
+
+	printf("%s : %s\n", message, SDL_GetError());
+}
+
+void MySQL_PrintError(const char * message, MYSQL mysql) {
+
+	printf("%s : %d > %s\n", message, mysql_errno(&mysql), mysql_error(&mysql));
+}
+
+// close SDL and MySQL
+void CloseSDLMySQL(SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Window ** window, MYSQL * mysql){
+
+	if (*texture != NULL) {
+		SDL_DestroyTexture(*texture);
+	} if (*renderer != NULL) {
+		SDL_DestroyRenderer(*renderer);
+	} if (*window != NULL) {
+		SDL_DestroyWindow(*window);
+	}
+	SDL_Quit();
+	mysql_close(mysql);
+}
+
+// diplay version SDL and MySQL
+void version () {
+
+	SDL_version nb;
+	SDL_VERSION(&nb);
+	printf("SDL : %d.%d.%d !\n", nb.major, nb.minor, nb.patch);
+	printf("MySQL client version : %s\n", mysql_get_client_info());
+}
