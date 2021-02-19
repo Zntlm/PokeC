@@ -93,7 +93,7 @@ int reminderDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfaceReminder, SD
 int loadDiplayCurseurReminder (SDL_Surface ** surfaceCurseurReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleCurseurReminder);
 int loadDiplayReminder (SDL_Surface ** surfaceReminder, SDL_Texture ** textureReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder);
 int updateMainReminderDisplay (SDL_Texture ** textureReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder, SDL_Rect * rectangleCurseurReminder, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome);
-//int manageEventReminder (renderer, surfaceReminder, textureReminder, &rectangleReminder, surfaceCurseurReminder, textureCurseurReminder, &rectangleCurseurReminder, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome);
+int manageEventReminder (SDL_Texture ** textureReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder, SDL_Rect * rectangleCurseurReminder, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome);
 int manageReminderDisplay (SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Texture ** textureHome);
 void closeReminderDisplay (SDL_Surface ** surfaceReminder, SDL_Texture ** textureReminder, SDL_Surface ** surfaceCurseurReminder, SDL_Texture ** textureCurseurReminder);
 
@@ -102,7 +102,7 @@ int pokeballsDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfacePokeballs, 
 int loadDiplayCurseurPokeballs (SDL_Surface ** surfaceCurseurPokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectangleCurseurPokeballs);
 int loadDiplayPokeballs (SDL_Surface ** surfacePokeballs, SDL_Texture ** texturePokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs);
 int updateMainPokeballsDisplay (SDL_Texture ** texturePokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs, SDL_Rect * rectangleCurseurPokeballs, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome);
-//int manageEventPokeballs (renderer, surfacePokeballs, texturePotion, &rectanglePokeballs, surfaceCurseurPokeballs, textureCurseurPokeballs, &rectangleCurseurPokeballs, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome);
+int manageEventPokeballs (SDL_Texture ** texturePokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs, SDL_Rect * rectangleCurseurPokeballs, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome);
 int managePokeballsDisplay (SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Texture ** textureHome);
 void closePokeballsDisplay (SDL_Surface ** surfacePokeballs, SDL_Texture ** texturePokeballs, SDL_Surface ** surfaceCurseurPokeballs, SDL_Texture ** textureCurseurPokeballs);
 
@@ -1497,6 +1497,12 @@ int manageEventPc (SDL_Renderer ** renderer, SDL_Surface ** surfacePc, SDL_Textu
                         case 382:
 	                        managePotionDisplay (renderer, texturePlayer,textureHome);
                         break;
+                        case 480:
+                            manageReminderDisplay(renderer, texturePlayer, textureHome);
+                        break;
+                        case 578:
+                            managePokeballsDisplay(renderer, texturePlayer, textureHome);
+                        break;
                       }
                     break;
                 }
@@ -1715,16 +1721,7 @@ int reminderDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfaceReminder, SD
   SDL_Rect rectangleReminder;
   SDL_Rect rectangleCurseurReminder;
   SDL_Rect rectanglePlayer;
-  (rectanglePlayer).w=60;
-  (rectanglePlayer).h=60;
-  (rectanglePlayer).x = 220+60*9;
-  (rectanglePlayer).y = 90+60*11;
-
   SDL_Rect rectangleHome;
-  (rectangleHome).w=1200;
-  (rectangleHome).h=720;
-  (rectangleHome).x = (1600-(rectangleHome).w)/2;
-  (rectangleHome).y = (900-(rectangleHome).h)/2;
 
   if (loadDiplayReminder (surfaceReminder, textureReminder, renderer, &rectangleReminder))
     return 1;
@@ -1732,11 +1729,49 @@ int reminderDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfaceReminder, SD
   if (loadDiplayCurseurReminder (surfaceCurseurReminder, textureCurseurReminder, renderer, &rectangleCurseurReminder))
     return 1;
 
-  //if (manageEventReminder (renderer, surfaceReminder, textureReminder, &rectangleReminder, surfaceCurseurReminder, textureCurseurReminder, &rectangleCurseurReminder, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome))
-  //  return 1;
+  if (manageEventReminder (textureReminder, textureCurseurReminder, renderer, &rectangleReminder, &rectangleCurseurReminder, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome))
+    return 1;
 
   return 0;
 }
+
+int manageEventReminder (SDL_Texture ** textureReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder, SDL_Rect * rectangleCurseurReminder, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
+
+SDL_bool programLaunched = SDL_TRUE;
+	//int nextCase;
+
+	// event
+	while (programLaunched) {
+
+		SDL_Event event;
+
+		while (SDL_PollEvent(&event)) {
+
+			switch (event.type) {
+
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+
+						case SDLK_ESCAPE:
+							programLaunched = SDL_FALSE; //Close the pc
+							break;
+					}
+					if (updateMainReminderDisplay (textureReminder, textureCurseurReminder, renderer, rectangleReminder, rectangleCurseurReminder, texturePlayer, rectanglePlayer, textureHome, rectangleHome))
+								return 1;
+					break;
+
+				case SDL_QUIT:
+					programLaunched = SDL_FALSE;
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
+	return 0;
+}
+
 
 // load and display curseur
 int loadDiplayCurseurReminder (SDL_Surface ** surfaceCurseurReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleCurseurReminder) {
@@ -1760,10 +1795,6 @@ int loadDiplayReminder (SDL_Surface ** surfaceReminder, SDL_Texture ** textureRe
     return 1;
   return 0;
 }
-
-//int manageEventReminder (renderer, surfaceReminder, textureReminder, &rectangleReminder, surfaceCurseurReminder, textureCurseurReminder, &rectangleCurseurReminder, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome)
-
-
 
 // refresh reminder
 int updateMainReminderDisplay (SDL_Texture ** textureReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder, SDL_Rect * rectangleCurseurReminder, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
@@ -1836,11 +1867,48 @@ int pokeballsDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfacePokeballs, 
   if (loadDiplayCurseurPokeballs (surfaceCurseurPokeballs, textureCurseurPokeballs, renderer, &rectangleCurseurPokeballs))
     return 1;
 
-  //if (manageEventPokeballs (renderer, surfacePokeballs, texturePotion, &rectanglePokeballs, surfaceCurseurPokeballs, textureCurseurPokeballs, &rectangleCurseurPokeballs, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome))
-  //  return 1;
+  if (manageEventPokeballs (texturePokeballs, textureCurseurPokeballs, renderer, &rectanglePokeballs, &rectangleCurseurPokeballs, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome))
+    return 1;
 
   return 0;
 }
+
+int manageEventPokeballs (SDL_Texture ** texturePokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs, SDL_Rect * rectangleCurseurPokeballs, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome){
+SDL_bool programLaunched = SDL_TRUE;
+	//int nextCase;
+
+	// event
+	while (programLaunched) {
+
+		SDL_Event event;
+
+		while (SDL_PollEvent(&event)) {
+
+			switch (event.type) {
+
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym) {
+
+						case SDLK_ESCAPE:
+							programLaunched = SDL_FALSE; //Close the pc
+							break;
+					}
+					if (updateMainPokeballsDisplay (texturePokeballs, textureCurseurPokeballs, renderer, rectanglePokeballs, rectangleCurseurPokeballs, texturePlayer, rectanglePlayer, textureHome, rectangleHome))
+								return 1;
+					break;
+
+				case SDL_QUIT:
+					programLaunched = SDL_FALSE;
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
+	return 0;
+}
+
 
 // load and display curseur
 int loadDiplayCurseurPokeballs (SDL_Surface ** surfaceCurseurPokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectangleCurseurPokeballs) {
@@ -1865,7 +1933,6 @@ int loadDiplayPokeballs (SDL_Surface ** surfacePokeballs, SDL_Texture ** texture
   return 0;
 }
 
-//int manageEventPokeballs (renderer, surfacePokeballs, texturePotion, &rectanglePokeballs, surfaceCurseurPokeballs, textureCurseurPokeballs, &rectangleCurseurPokeballs, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome)
 
 // refresh Pokeballs
 int updateMainPokeballsDisplay (SDL_Texture ** texturePokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs, SDL_Rect * rectangleCurseurPokeballs, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
