@@ -75,7 +75,7 @@ int displayAll (SDL_Texture ** texture, SDL_Surface ** surface, SDL_Rect * recta
 int matriceMain(int x, int y);
 int mainGameDisplay (Config config, TTF_Font ** font, SDL_Surface ** surfacePlayer, SDL_Texture ** texturePlayer, SDL_Renderer ** renderer, SDL_Surface ** map, SDL_Texture ** texture, MYSQL * mysql);
 int manageEventMainGame (Config config, TTF_Font ** font, SDL_Renderer ** renderer, SDL_Surface ** map, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Surface ** surfacePlayer, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, MYSQL * mysql);
-int updateMainGateDisplay (SDL_Renderer ** renderer, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer);
+int updateMainGameDisplay (SDL_Renderer ** renderer, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer);
 int manageMainGame (Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql);
 void closeMainGameDisplay (SDL_Surface ** map, SDL_Texture ** texture, SDL_Surface ** surfacePlayer, SDL_Texture ** texturePlayer);
 int randomAggro (Config config, TTF_Font ** font, SDL_Renderer ** renderer, int nextCase, MYSQL * mysql);
@@ -261,6 +261,8 @@ int mainGameDisplay (Config config, TTF_Font ** font, SDL_Surface ** surfacePlay
   if (displayAll(texturePlayer, surfacePlayer, &rectanglePlayer, renderer, 32 * 3, 32 * 3, -1, -1))
     return 1;
 
+	SDL_RenderPresent(*renderer);
+
   if (manageEventMainGame(config, font, renderer, map,  texture, &rectangle, surfacePlayer, texturePlayer, &rectanglePlayer, mysql))
     return 1;
 
@@ -351,7 +353,7 @@ int manageEventMainGame (Config config, TTF_Font ** font, SDL_Renderer ** render
 
 					}
 
-					if (updateMainGateDisplay (renderer, texture, rectangle, texturePlayer, rectanglePlayer))
+					if (updateMainGameDisplay (renderer, texture, rectangle, texturePlayer, rectanglePlayer))
 						return 1;
 
           break;
@@ -439,7 +441,7 @@ int randomChoseFight (Config config, TTF_Font ** font, SDL_Renderer ** renderer,
 }
 
 // refresh map display
-int updateMainGateDisplay (SDL_Renderer ** renderer, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer) {
+int updateMainGameDisplay (SDL_Renderer ** renderer, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer) {
 
   SDL_RenderClear(*renderer);
 
@@ -448,6 +450,8 @@ int updateMainGateDisplay (SDL_Renderer ** renderer, SDL_Texture ** texture, SDL
 
   if (updateRenderer(texturePlayer, renderer, rectanglePlayer))
     return 1;
+
+	SDL_RenderPresent(*renderer);
 
   return 0;
 }
@@ -523,6 +527,8 @@ int fightDisplay (Config config, Pokemon tab[6], SDL_Surface ** surfaceChoseAtta
 	if (displayChoseActionFight(surfaceChoseActionFight, textureChoseActionFight, &rectangleChoseActionFight, surfaceCurseur, textureCurseur, &rectangleCurseur, renderer))
 		return 1;
 
+	SDL_RenderPresent(*renderer);
+
 	if (manageEventChoseActionFight (config, surfacePokemonPlayer, &actu, &rectanglePokemonPlayer, &rectanglePokemonAdv, &rectangleBackground, textureBackground, texturePokemonAdv, texturePokemonPlayer, textureText, &adv, mysql, text, font, black, surfaceChoseAttack, textureChoseAttack, tab, surfaceSelect, textureSelect, textureChoseActionFight, &rectangleChoseActionFight, textureCurseur, &rectangleCurseur, renderer))
 		return 1;
 
@@ -534,6 +540,7 @@ int updateFightDisplay (SDL_Surface ** surfacePokemonPlayer, MYSQL * mysql, Poke
 
 	SDL_Color black = {0, 0, 0};
 	SDL_Rect rectangle;
+	int tmp;
 
 	if (updateRenderer(textureBackground, renderer, rectangleBackground))
 		return 1;
@@ -551,9 +558,10 @@ int updateFightDisplay (SDL_Surface ** surfacePokemonPlayer, MYSQL * mysql, Poke
 
 	if (displayPvPokemon (text, textureText, font, black, *player, 100, 0, renderer, &rectangle))
 		return 1;
-
 	if (displayPvPokemon (text, textureText, font, black, adv, 1100, 0, renderer, &rectangle))
 		return 1;
+
+	SDL_RenderPresent(*renderer);
 
 	return 0;
 }
@@ -564,6 +572,7 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 	int curseur = 0;
 	int action = 0;
 	int tmp = 0;
+	int pvOld = 0;
 	int i = 0;
 	char poss = 0;
 	SDL_bool programLaunched = SDL_TRUE;
@@ -632,8 +641,19 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 					}
 
 					if (action == 1){
+						pvOld = pokemonPlayer[*actu].pvActuel;
 						if (actionAttack (mysql, (*adv).lvl, (*adv).attack, (*adv).comp[rand()%4], &(pokemonPlayer[*actu])))
 							return 1;
+
+						tmp = pokemonPlayer[*actu].pvActuel;
+						pokemonPlayer[*actu].pvActuel = pvOld;
+
+						while (tmp != pokemonPlayer[*actu].pvActuel) {
+							if (updateFightDisplay (surfacePokemonPlayer, mysql, &(pokemonPlayer[*actu]), *adv, text, font, renderer, rectanglePokemonPlayer, rectanglePokemonAdv, rectangleBackground, textureBackground, texturePokemonAdv, texturePokemonPlayer, textureText))
+								return 1;
+							pokemonPlayer[*actu].pvActuel -= 1;
+							SDL_Delay(1000/60);
+						}
 					}
 
 					for (i = 0; i < 6 && pokemonPlayer[i].pvActuel <= 0; i++);
@@ -651,6 +671,7 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 
 					if (updateFightDisplay (surfacePokemonPlayer, mysql, &(pokemonPlayer[*actu]), *adv, text, font, renderer, rectanglePokemonPlayer, rectanglePokemonAdv, rectangleBackground, textureBackground, texturePokemonAdv, texturePokemonPlayer, textureText))
 						return 1;
+
 					action = 0;
 					if (updateDisplayChoseActionFight (textureChoseActionFight, rectangleChoseActionFight, textureCurseur, rectangleCurseur, poss, renderer))
 						return 1;
@@ -699,6 +720,8 @@ int manageChoseAtack (Config config, SDL_Surface ** surfacePokemonPlayer, int ac
 	SDL_Rect rectangleChoseAttack;
 	SDL_Rect rectangleAttack[4];
 	SDL_Rect rectangle;
+	int tmp;
+	int pvOld;
 
 	(*rectangleCurseur).x = 475;
 	(*rectangleCurseur).y = 575;
@@ -731,9 +754,21 @@ int manageChoseAtack (Config config, SDL_Surface ** surfacePokemonPlayer, int ac
 
 					} else if (event.key.keysym.sym == config.validate) {
 
+						pvOld = (*adv).pvActuel;
 						if (actionAttack(mysql, (pokemonPlayer[actu]).lvl, (pokemonPlayer[actu]).attack, (pokemonPlayer[actu]).comp[((*rectangleCurseur).y - 575) / 75], adv))
 							return 1;
-						return updateFightDisplay (surfacePokemonPlayer, mysql, &(pokemonPlayer[actu]), *adv, text, font, renderer, rectanglePokemonPlayer, rectanglePokemonAdv, rectangleBackground, textureBackground, texturePokemonAdv, texturePokemonPlayer, textureText);
+
+						tmp = (*adv).pvActuel;
+						(*adv).pvActuel = pvOld;
+
+						while (tmp != (*adv).pvActuel) {
+							if (updateFightDisplay (surfacePokemonPlayer, mysql, &(pokemonPlayer[actu]), *adv, text, font, renderer, rectanglePokemonPlayer, rectanglePokemonAdv, rectangleBackground, textureBackground, texturePokemonAdv, texturePokemonPlayer, textureText))
+								return 1;
+							(*adv).pvActuel -= 1;
+							SDL_Delay(1000/60);
+						}
+
+						return 0;
 
 					}
 	  			if (updateDisplayAtack (&rectangleChoseAttack, rectangleCurseur, rectangleAttack, textureCurseur, textureChoseAttack, &(pokemonPlayer[actu]), renderer))
@@ -833,6 +868,7 @@ int displayChoseAttack (SDL_Rect * rectangleChoseAttack, SDL_Rect * rectangleCur
 			return 1;
 
 	}
+	SDL_RenderPresent(*renderer);
 
 	return 0;
 }
@@ -850,6 +886,7 @@ int updateDisplayAtack (SDL_Rect * rectangleChoseAttack, SDL_Rect * rectangleCur
 		if (updateRenderer(&(*pokemonPlayer).comp[i].text, renderer, &(rectangleAttack[i])))
 			return 1;
 	}
+	SDL_RenderPresent(*renderer);
 
 	return 0;
 }
@@ -887,6 +924,8 @@ int updateDisplayChoseActionFight (SDL_Texture ** textureChoseActionFight, SDL_R
 
 	if (updateRenderer(textureCurseur, renderer, rectangleCurseur))
 		return 1;
+
+	SDL_RenderPresent(*renderer);
 
 	return 0;
 }
@@ -1353,6 +1392,8 @@ int switchDisplay (Config config, SDL_Surface ** text, SDL_Texture ** textureTex
   if (displayAll(textureCurseur, surfaceCurseur, &rectangleCurseur, renderer, 10, 110, 25, 25))
     return 1;
 
+	SDL_RenderPresent(*renderer);
+
 	return manageSwitchPokemonDisplay (config, text, textureText, font, &rectangleCurseur, &rectangleSwitch, rectangle, player, surfacePokemon, surfaceCurseur, textureCurseur, surfaceSwitch, textureSwitch, renderer);
 }
 
@@ -1415,6 +1456,8 @@ int updatePokeball (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font **
 	if (updateRenderer(textureCurseur, renderer, rectangleCurseur))
 		return 1;
 
+	SDL_RenderPresent(*renderer);
+
 	return 0;
 }
 
@@ -1455,6 +1498,8 @@ int displaySixPokemon (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font
 		if (displayPvPokemon (text, textureText, font, black, player[i], 200, 100 + 80 * i, renderer, &rectanglePV))
 			return 1;
 	}
+
+	SDL_RenderPresent(*renderer);
 
 	return 0;
 }
@@ -1660,21 +1705,21 @@ void closeMenuDisplay (SDL_Surface ** surfaceMenu, SDL_Texture ** textureMenu, S
 ********************************************/
 
 int MatriceHome(int x, int y){
-int matriceHomeInt[12][25]={
-{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-{0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1},
-{1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,1,1,0,0,1},
-{0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1},
-{0,0,0,0,1,1,1,1,1,1,0,0,1,0,0,0,1,1,1,1},
-{1,1,1,0,0,0,1,0,0,0,0,0,1,1,0,0,0,1,0,0},
-{1,1,1,0,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,0},
-{1,0,0,1,1,2,1,2,1,1,1,1,1,1,0,0,0,0,0,0},
-{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
-{0,0,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1,1,0,0},
-{0,0,0,1,1,0,0,1,1,3,1,1,0,0,1,1,1,1,1,0}
-};
-return matriceHomeInt[y/60][(x-200)/60];
+	int matriceHomeInt[12][25]={
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1},
+		{1,1,1,1,1,0,0,0,1,1,1,1,1,1,0,1,1,0,0,1},
+		{0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1},
+		{0,0,0,0,1,1,1,1,1,1,0,0,1,0,0,0,1,1,1,1},
+		{1,1,1,0,0,0,1,0,0,0,0,0,1,1,0,0,0,1,0,0},
+		{1,1,1,0,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,0},
+		{1,0,0,1,1,2,1,2,1,1,1,1,1,1,0,0,0,0,0,0},
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0},
+		{0,0,1,1,1,0,0,1,1,1,1,1,0,0,1,1,1,1,0,0},
+		{0,0,0,1,1,0,0,1,1,3,1,1,0,0,1,1,1,1,1,0}
+		};
+	return matriceHomeInt[y/60][(x-200)/60];
 }
 
 //Display home
@@ -2127,6 +2172,8 @@ int displayHomePage (Config * config, TTF_Font ** font, SDL_Renderer ** renderer
 	if (displayAll(textureCurseur, surfaceCurseur, &rectangleCurseur, renderer, 450, 450, 50, 50))
 		return 1;
 
+	SDL_RenderPresent(*renderer);
+
 	if (manageEventHomePage(config, font, renderer, mysql, &rectangleHomePage, textureHomePage, &rectangleCurseur, textureCurseur))
 		return 1;
 
@@ -2188,6 +2235,8 @@ int updateHomePage (SDL_Renderer ** renderer, SDL_Rect * rectangleHomePage, SDL_
 		return 1;
 	if (updateRenderer(textureCurseur, renderer, rectangleCurseur))
 		return 1;
+
+	SDL_RenderPresent(*renderer);
 
 	return 0;
 }
@@ -2443,11 +2492,11 @@ int updateRenderer (SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Rect *
   // copy texture
   if(SDL_RenderCopy(*renderer, *texture, NULL, rectangle)){
     SDL_PrintError("Error display texture");
-  return 1;
+  	return 1;
   }
 
   // update renderer
-  SDL_RenderPresent(*renderer);
+  //SDL_RenderPresent(*renderer);
 
   return 0;
 }
