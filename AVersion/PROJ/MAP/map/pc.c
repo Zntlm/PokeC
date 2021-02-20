@@ -35,8 +35,8 @@ int displayItem (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText,
 	SDL_Rect rectangle;
 	SDL_Color black = {0, 0, 0};
 
-  request = malloc(strlen("SELECT Potion, Pokeball, Revive FROM TRAINER WHERE ID=1") + 1);
-  strcpy(request, "SELECT Potion, Pokeball, Revive FROM TRAINER WHERE ID=1");
+  request = malloc(strlen("SELECT Potion, Revive, Pokeball FROM TRAINER WHERE ID=1") + 1);
+  strcpy(request, "SELECT Potion, Revive, Pokeball FROM TRAINER WHERE ID=1");
 
   if (mysql_query(mysql, request)){
       free(request);

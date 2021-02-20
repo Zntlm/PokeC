@@ -208,6 +208,8 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 int finishFight (MYSQL * mysql, Pokemon * pokemonPlayer, int lvlAdv) {
 
 	char * request;
+	MYSQL_ROW row;
+	MYSQL_RES * result;
 
 	(*pokemonPlayer).xp += lvlAdv;
 
@@ -223,6 +225,36 @@ int finishFight (MYSQL * mysql, Pokemon * pokemonPlayer, int lvlAdv) {
     return 1;
 	}
 	free(request);
+
+	request = malloc(strlen("SELECT PokeDollar FROM TRAINER WHERE ID=1") + 1);
+  sprintf(request, "SELECT PokeDollar FROM TRAINER WHERE ID=1");
+
+  if (mysql_query(mysql, request)){
+      free(request);
+      MySQL_PrintError("Error query", *mysql);
+      return 1;
+  }
+  free(request);
+
+  result = mysql_store_result(mysql);
+  if (result == NULL) {
+    MySQL_PrintError("Error extract résult", *mysql);
+    return 1;
+  }
+
+  row = mysql_fetch_row(result);
+  if (row == NULL)
+    return 1;
+
+	request = malloc(strlen("UPDATE TRAINER SET PokeDollar= WHERE ID=1") + sizeof(int) + 1);
+  sprintf(request, "UPDATE TRAINER SET PokeDollar=%d WHERE ID=1", atoi(row[0]) + lvlAdv * 100);
+
+  if (mysql_query(mysql, request)){
+      free(request);
+      MySQL_PrintError("Error query", *mysql);
+      return 1;
+  }
+  free(request);
 
 	return 0;
 }
