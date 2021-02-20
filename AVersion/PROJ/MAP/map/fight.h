@@ -8,6 +8,7 @@
 #include "types.h"
 #include "manage.h"
 #include "chosePokemon.h"
+#include "pc.h"
 
 int fightDisplay (Config config, Pokemon tab[6], SDL_Surface ** surfaceChoseAttack, SDL_Texture ** textureChoseAttack, SDL_Surface ** surfaceSelect, SDL_Texture ** textureSelect, SDL_Surface ** surfaceChoseActionFight, SDL_Texture ** textureChoseActionFight, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, MYSQL * mysql, MYSQL_ROW row, SDL_Renderer ** renderer, SDL_Surface ** surfaceBackground, SDL_Texture ** textureBackground, SDL_Surface ** surfacePokemonPlayer, SDL_Texture ** texturePokemonPlayer, SDL_Surface ** surfacePokemonAdv, SDL_Texture ** texturePokemonAdv);
 void closeFightDisplay (Pokemon tab[6], SDL_Surface ** surfaceChoseAttack, SDL_Texture ** textureChoseAttack, SDL_Surface ** surfaceSelect, SDL_Texture ** textureSelect, SDL_Surface ** surfaceChoseActionFight, SDL_Texture ** textureChoseActionFight, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Surface ** text, SDL_Texture ** textureText, SDL_Surface ** surfaceBackground, SDL_Texture ** textureBackground, SDL_Surface ** surfacePokemonPlayer, SDL_Texture ** texturePokemonPlayer, SDL_Surface ** surfacePokemonAdv, SDL_Texture ** texturePokemonAdv);
@@ -28,5 +29,7 @@ int updateFightDisplay (SDL_Surface ** surfacePokemonPlayer, MYSQL * mysql, Poke
 int finishFight (MYSQL * mysql, Pokemon * pokemonPlayer, int lvlAdv);
 int takeComp (MYSQL * mysql, Pokemon * pokemon);
 int takeTypes (MYSQL * mysql, Pokemon * pokemon);
+int catchPokemon (Pokemon * adv, MYSQL * mysql);
+int deleteItem (const char * item, MYSQL * mysql);
 
 #endif

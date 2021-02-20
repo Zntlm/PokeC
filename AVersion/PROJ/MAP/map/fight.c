@@ -145,6 +145,34 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 								break;
 
 							case 2: // item
+								tmp = managePcDisplay(1, mysql, font, config, renderer);
+								if (tmp == 1)
+									return 1;
+								if (tmp == 11){
+									tmp = manageSwitchPokemon (config, font, pokemonPlayer, renderer);
+									if (pokemonPlayer[tmp % 10].pvActuel != 0 && pokemonPlayer[tmp % 10].pvActuel != pokemonPlayer[tmp % 10].pv) {
+										pokemonPlayer[tmp % 10].pvActuel += pokemonPlayer[tmp % 10].pv / 4;
+										if (pokemonPlayer[tmp % 10].pvActuel > pokemonPlayer[tmp % 10].pv)
+											pokemonPlayer[tmp % 10].pvActuel = pokemonPlayer[tmp % 10].pv;
+									}
+									if (deleteItem ("Potion", mysql))
+										return 1;
+								} else if (tmp == 12) {
+									tmp = manageSwitchPokemon (config, font, pokemonPlayer, renderer);
+									if (pokemonPlayer[tmp % 10].pvActuel == 0) {
+										pokemonPlayer[tmp % 10].pvActuel += pokemonPlayer[tmp % 10].pv / 2;
+									}
+									if (deleteItem ("Revive", mysql))
+										return 1;
+								} else if (tmp == 13) {
+									if (rand()%2) {
+										if (catchPokemon(adv, mysql))
+											return 1;
+									}
+									if (deleteItem ("Pokeball", mysql))
+										return 1;
+									return 0;
+								}
 								action = 1;
 								break;
 
@@ -201,6 +229,84 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 
     }
   }
+	return 0;
+}
+
+int deleteItem (const char * item, MYSQL * mysql) {
+
+	MYSQL_ROW row;
+	MYSQL_RES * result;
+	char * request;
+
+	request = malloc(strlen("SELECT  FROM TRAINER WHERE ID=1") + strlen(item) + 1);
+  sprintf(request, "SELECT %s FROM TRAINER WHERE ID=1", item);
+
+  if (mysql_query(mysql, request)){
+      free(request);
+      MySQL_PrintError("Error query", *mysql);
+      return 1;
+  }
+  free(request);
+
+  result = mysql_store_result(mysql);
+  if (result == NULL) {
+    MySQL_PrintError("Error extract résult", *mysql);
+    return 1;
+  }
+
+  row = mysql_fetch_row(result);
+  if (row == NULL)
+    return 1;
+
+  request = malloc(strlen("UPDATE TRAINER SET = WHERE ID=1") + strlen(item) + sizeof(int) + 1);
+  sprintf(request, "UPDATE TRAINER SET %s=%d WHERE ID=1", item, atoi(row[0]) - 1);
+
+  if (mysql_query(mysql, request)){
+      free(request);
+      MySQL_PrintError("Error query", *mysql);
+      return 1;
+  }
+  free(request);
+
+	return 0;
+}
+
+int catchPokemon (Pokemon * adv, MYSQL * mysql) {
+
+	MYSQL_ROW row;
+	MYSQL_RES * result;
+	char * request;
+
+	request = malloc(strlen("SELECT MAX(ID) FROM POKEBALL") + 1);
+  strcpy(request, "SELECT MAX(ID) FROM POKEBALL");
+
+  if (mysql_query(mysql, request)){
+      free(request);
+      MySQL_PrintError("Error query", *mysql);
+      return 1;
+  }
+  free(request);
+
+  result = mysql_store_result(mysql);
+  if (result == NULL) {
+    MySQL_PrintError("Error extract résult", *mysql);
+    return 1;
+  }
+
+  row = mysql_fetch_row(result);
+  if (row == NULL)
+    return 1;
+
+	request = malloc(strlen("INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE (, , 0, 1, \"\", 1)") + strlen((*adv).name) + sizeof(int) * 2 + 1);
+  sprintf(request, "INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE (%d, %d, 0, 1, \"%s\", 1)", atoi(row[0]) + 1, (*adv).lvl, (*adv).name);
+
+  if (mysql_query(mysql, request)){
+      free(request);
+      MySQL_PrintError("Error query", *mysql);
+      return 1;
+  }
+  free(request);
+
 	return 0;
 }
 

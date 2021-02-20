@@ -1,14 +1,14 @@
 #include "pc.h"
 
-//Configuration Pc
-int pcDisplay(MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, Config config, SDL_Renderer ** renderer, SDL_Surface ** surfacePc, SDL_Texture ** texturePc, SDL_Surface ** surfaceCurseurPc, SDL_Texture ** textureCurseurPc, SDL_Texture ** texturePlayer, SDL_Texture ** textureHome, SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion){
+int pcDisplay(int retrun, MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, Config config, SDL_Renderer ** renderer, SDL_Surface ** surfacePc, SDL_Texture ** texturePc, SDL_Surface ** surfaceCurseurPc, SDL_Texture ** textureCurseurPc, SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion){
 
   SDL_Rect rectanglePc;
   SDL_Rect rectangleCurseurPc;
   SDL_Rect rectanglePotion;
   SDL_Rect rectangleCurseurPotion;
-  SDL_Rect rectanglePlayer;
-  SDL_Rect rectangleHome;
+  int potion = 0;
+  int revive = 0;
+  int pokeball = 0;
 
   if (loadDiplayPc (surfacePc, texturePc, renderer, &rectanglePc))
     return 1;
@@ -16,24 +16,22 @@ int pcDisplay(MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText, TT
   if (loadDiplayCurseurPc (surfaceCurseurPc, textureCurseurPc, renderer, &rectangleCurseurPc))
     return 1;
 
-  if (displayItem(mysql, text, textureText, font, renderer))
+  if (selectItem (mysql, &potion, &pokeball, &revive))
+    return 1;
+
+  if (displayItem(potion, pokeball, revive, text, textureText, font, renderer))
     return 1;
 
   SDL_RenderPresent(*renderer);
 
-  if (manageEventPc (mysql, text, textureText, font, config, renderer, surfacePc, texturePc, &rectanglePc, surfaceCurseurPc, textureCurseurPc, &rectangleCurseurPc, texturePlayer, &rectanglePlayer, textureHome, &rectangleHome, texturePotion, textureCurseurPotion, &rectanglePotion, &rectangleCurseurPotion))
-    return 1;
-
-  return 0;
+  return manageEventPc (&potion, &pokeball, &revive, retrun, mysql, text, textureText, font, config, renderer,  surfacePc, texturePc, &rectanglePc, surfaceCurseurPc, textureCurseurPc, &rectangleCurseurPc, texturePotion, textureCurseurPotion, &rectanglePotion, &rectangleCurseurPotion);
 }
 
-int displayItem (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, SDL_Renderer ** renderer) {
+int selectItem (MYSQL * mysql, int * potion, int * pokeball, int * revive) {
 
   MYSQL_ROW row;
 	MYSQL_RES * result;
 	char * request;
-	SDL_Rect rectangle;
-	SDL_Color black = {0, 0, 0};
 
   request = malloc(strlen("SELECT Potion, Revive, Pokeball FROM TRAINER WHERE ID=1") + 1);
   strcpy(request, "SELECT Potion, Revive, Pokeball FROM TRAINER WHERE ID=1");
@@ -55,8 +53,21 @@ int displayItem (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText,
   if (row == NULL)
     return 1;
 
-  request = malloc(strlen("Potion : ") + strlen(row[0]) + 1);
-  sprintf(request, "Potion : %s", row[0]);
+  *potion = atoi(row[0]);
+  *revive = atoi(row[1]);
+  *pokeball = atoi(row[2]);
+
+  return 0;
+}
+
+int displayItem (int potion, int pokeball, int revive, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, SDL_Renderer ** renderer) {
+
+	SDL_Rect rectangle;
+	SDL_Color black = {0, 0, 0};
+  char * request;
+
+  request = malloc(strlen("Potion : ") + sizeof(int) + 1);
+  sprintf(request, "Potion : %d", potion);
 
   *text = TTF_RenderText_Blended(*font, request, black);
 
@@ -64,8 +75,8 @@ int displayItem (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText,
 	if (displayAll(textureText, text, &rectangle, renderer, 700, 362, 400, -1))
 		return 1;
 
-  request = malloc(strlen("Revive : ") + strlen(row[1]) + 1);
-  sprintf(request, "Revive : %s", row[1]);
+  request = malloc(strlen("Revive : ") + sizeof(int) + 1);
+  sprintf(request, "Revive : %d", revive);
 
   *text = TTF_RenderText_Blended(*font, request, black);
 
@@ -73,8 +84,8 @@ int displayItem (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText,
 	if (displayAll(textureText, text, &rectangle, renderer, 700, 460, 400, -1))
 		return 1;
 
-  request = malloc(strlen("Pokeball : ") + strlen(row[2]) + 1);
-  sprintf(request, "Pokeball : %s", row[2]);
+  request = malloc(strlen("Pokeball : ") + sizeof(int) + 1);
+  sprintf(request, "Pokeball : %d", pokeball);
 
   *text = TTF_RenderText_Blended(*font, request, black);
 
@@ -85,7 +96,6 @@ int displayItem (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText,
   return 0;
 }
 
-// load and display curseur
 int loadDiplayCurseurPc (SDL_Surface ** surfaceCurseuPc, SDL_Texture ** textureCurseurPc, SDL_Renderer ** renderer, SDL_Rect * rectangleCurseurPc) {
 
   //CURSEUR
@@ -115,10 +125,8 @@ int loadDiplayCurseurPc (SDL_Surface ** surfaceCurseuPc, SDL_Texture ** textureC
   return 0;
 }
 
-// load and display pc
 int loadDiplayPc (SDL_Surface ** surfacePc, SDL_Texture ** texturePc, SDL_Renderer ** renderer, SDL_Rect * rectanglePc) {
 
-  // load home page
   if (loadBMP("../img/pcMenu.bmp", surfacePc))
     return 1;
 
@@ -144,8 +152,7 @@ int loadDiplayPc (SDL_Surface ** surfacePc, SDL_Texture ** texturePc, SDL_Render
   return 0;
 }
 
-
-int manageEventPc (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, Config config, SDL_Renderer ** renderer, SDL_Surface ** surfacePc, SDL_Texture ** texturePc, SDL_Rect * rectanglePc, SDL_Surface ** surfaceCurseuPc, SDL_Texture ** textureCurseurPc, SDL_Rect * rectangleCurseurPc, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome, SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion, SDL_Rect * rectanglePotion, SDL_Rect * rectangleCurseurPotion) {
+int manageEventPc (int * potion, int * pokeball, int * revive, int retrun, MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, Config config, SDL_Renderer ** renderer, SDL_Surface ** surfacePc, SDL_Texture ** texturePc, SDL_Rect * rectanglePc, SDL_Surface ** surfaceCurseuPc, SDL_Texture ** textureCurseurPc, SDL_Rect * rectangleCurseurPc, SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion, SDL_Rect * rectanglePotion, SDL_Rect * rectangleCurseurPotion) {
 
   SDL_bool programLaunched = SDL_TRUE;
   //int nextCase;
@@ -234,24 +241,45 @@ int manageEventPc (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureTex
                 case 625:
                   switch ((*rectangleCurseurPc).y){
                     case 382:
+                      if (retrun){
+                        if (*potion == 0)
+                          return 0;
+                        return 11;
+                      }
                       if (manageBuy (mysql, font, "../img/pcPotion.bmp", config, renderer))
+                        return 1;
+                      if (selectItem (mysql, potion, pokeball, revive))
                         return 1;
                     break;
 
                     case 480:
+                      if (retrun){
+                        if (*revive == 0)
+                          return 0;
+                        return 12;
+                      }
                       if (manageBuy (mysql, font, "../img/pcRappel.bmp", config, renderer))
+                        return 1;
+                      if (selectItem (mysql, potion, pokeball, revive))
                         return 1;
                     break;
 
                     case 578:
+                      if (retrun){
+                        if (*pokeball == 0)
+                          return 0;
+                        return 13;
+                      }
                       if (manageBuy (mysql, font, "../img/pcPokeball.bmp", config, renderer))
+                        return 1;
+                      if (selectItem (mysql, potion, pokeball, revive))
                         return 1;
                     break;
                   }
                 break;
             }
           }
-          if (updateMainPcDisplay (mysql, text, textureText, font, texturePc, textureCurseurPc, renderer, rectanglePc, rectangleCurseurPc, texturePlayer, rectanglePlayer, textureHome, rectangleHome))
+          if (updateMainPcDisplay (*potion, *pokeball, *revive, mysql, text, textureText, font, texturePc, textureCurseurPc, renderer, rectanglePc, rectangleCurseurPc))
                 return 1;
           break;
 
@@ -268,20 +296,13 @@ int manageEventPc (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureTex
   return 0;
 }
 
-// refresh pc
-int updateMainPcDisplay (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, SDL_Texture ** texturePc, SDL_Texture ** textureCurseurPc, SDL_Renderer ** renderer, SDL_Rect * rectanglePc, SDL_Rect * rectangleCurseurPc, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
+int updateMainPcDisplay (int potion, int pokeball, int revive, MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, SDL_Texture ** texturePc, SDL_Texture ** textureCurseurPc, SDL_Renderer ** renderer, SDL_Rect * rectanglePc, SDL_Rect * rectangleCurseurPc) {
 
-  SDL_RenderClear(*renderer);
-
-  if (updateRenderer(textureHome, renderer, rectangleHome))
-    return 1;
-  if (updateRenderer(texturePlayer, renderer, rectanglePlayer))
-    return 1;
   if (updateRenderer(texturePc, renderer, rectanglePc))
     return 1;
   if (updateRenderer(textureCurseurPc, renderer, rectangleCurseurPc))
     return 1;
-  if (displayItem(mysql, text, textureText, font, renderer))
+  if (displayItem(potion, pokeball, revive, text, textureText, font, renderer))
     return 1;
 
   SDL_RenderPresent(*renderer);
@@ -289,8 +310,7 @@ int updateMainPcDisplay (MYSQL * mysql, SDL_Surface ** text, SDL_Texture ** text
   return 0;
 }
 
-// manage error in pcDisplay
-int managePcDisplay (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Texture ** textureHome) {
+int managePcDisplay (int retrun, MYSQL * mysql, TTF_Font ** font, Config config, SDL_Renderer ** renderer) {
 
   SDL_Surface * surfacePc = NULL;
   SDL_Texture * texturePc = NULL;
@@ -302,14 +322,13 @@ int managePcDisplay (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Rendere
   SDL_Texture * textureText = NULL;
 
 
-  int pc = pcDisplay(mysql, &text, &textureText, font, config, renderer, &surfacePc, &texturePc, &surfaceCurseurPc, &textureCurseurPc, texturePlayer, textureHome, &texturePotion, &textureCurseurPotion);
+  int pc = pcDisplay(retrun, mysql, &text, &textureText, font, config, renderer, &surfacePc, &texturePc, &surfaceCurseurPc, &textureCurseurPc, &texturePotion, &textureCurseurPotion);
 
   closePcDisplay(&text, &textureText, &surfacePc, &texturePc, &surfaceCurseurPc, &textureCurseurPc);
 
   return pc;
 }
 
-// free surface and texture used in pcDisplay
 void closePcDisplay (SDL_Surface ** text, SDL_Texture ** textureText, SDL_Surface ** surfacePc, SDL_Texture ** texturePc, SDL_Surface ** surfaceCurseurPc, SDL_Texture ** textureCurseur) {
   if (*surfacePc != NULL)
     SDL_FreeSurface(*surfacePc);

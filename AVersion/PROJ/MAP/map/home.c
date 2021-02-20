@@ -118,7 +118,7 @@ int manageEventHomeGame (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Ren
               if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
                 return 1;
             }else if(nextCase==2){
-                  managePcDisplay(mysql, font, config, renderer, texturePlayer, textureHome);
+                  managePcDisplay(0, mysql, font, config, renderer);
             }else if(nextCase==3){
                  return 0;
             }
@@ -129,7 +129,7 @@ int manageEventHomeGame (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Ren
               if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
                 return 1;
             }else if(nextCase==2){
-              managePcDisplay(mysql, font, config, renderer, texturePlayer, textureHome);
+                  managePcDisplay(0, mysql, font, config, renderer);
             }else if(nextCase==3){
                  return 0;
             }
@@ -140,7 +140,7 @@ int manageEventHomeGame (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Ren
               if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
                 return 1;
             }else if (nextCase==2){
-                managePcDisplay(mysql, font, config, renderer, texturePlayer, textureHome);
+                  managePcDisplay(0, mysql, font, config, renderer);
             }else if(nextCase==3){
                  return 0;
             }
@@ -151,7 +151,7 @@ int manageEventHomeGame (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Ren
               if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
                 return 1;
             }else if(nextCase==2){
-              managePcDisplay(mysql, font, config, renderer, texturePlayer, textureHome);
+                  managePcDisplay(0, mysql, font, config, renderer);
             }else if(nextCase==3){
                  return 0;
             }
