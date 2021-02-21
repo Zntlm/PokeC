@@ -5,6 +5,12 @@ int switchDisplay (Config config, SDL_Surface ** text, SDL_Texture ** textureTex
 	SDL_Rect rectangleCurseur;
 	SDL_Rect rectangleSwitch;
 	SDL_Rect rectangle[6];
+	int number = 0;
+
+	while (strcmp(player[number].name, "")) {
+		number++;
+	}
+	number--;
 
 	if (loadBMP("../img/chosePokemon.bmp", surfaceSwitch))
     return 1;
@@ -12,7 +18,7 @@ int switchDisplay (Config config, SDL_Surface ** text, SDL_Texture ** textureTex
   if (displayAll(textureSwitch, surfaceSwitch, &rectangleSwitch, renderer, 0, 0, 1600, 900))
     return 1;
 
-	if (displaySixPokemon (text, textureText, font, player, rectangle, surfacePokemon, renderer))
+	if (displaySixPokemon (number, text, textureText, font, player, rectangle, surfacePokemon, renderer))
 		return 1;
 
   if (loadBMP("../img/curseur.bmp", surfaceCurseur))
@@ -23,10 +29,10 @@ int switchDisplay (Config config, SDL_Surface ** text, SDL_Texture ** textureTex
 
 	SDL_RenderPresent(*renderer);
 
-	return manageSwitchPokemonDisplay (config, text, textureText, font, &rectangleCurseur, &rectangleSwitch, rectangle, player, surfacePokemon, surfaceCurseur, textureCurseur, surfaceSwitch, textureSwitch, renderer);
+	return manageSwitchPokemonDisplay (number, config, text, textureText, font, &rectangleCurseur, &rectangleSwitch, rectangle, player, surfacePokemon, surfaceCurseur, textureCurseur, surfaceSwitch, textureSwitch, renderer);
 }
 
-int manageSwitchPokemonDisplay (Config config, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, SDL_Rect * rectangleCurseur, SDL_Rect * rectangleSwitch, SDL_Rect rectangle[6], Pokemon player[6], SDL_Surface ** surfacePokemon, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Surface ** surfaceSwitch, SDL_Texture ** textureSwitch, SDL_Renderer ** renderer) {
+int manageSwitchPokemonDisplay (int number, Config config, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, SDL_Rect * rectangleCurseur, SDL_Rect * rectangleSwitch, SDL_Rect rectangle[6], Pokemon player[6], SDL_Surface ** surfacePokemon, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Surface ** surfaceSwitch, SDL_Texture ** textureSwitch, SDL_Renderer ** renderer) {
 
 	SDL_bool programLaunched = SDL_TRUE;
 
@@ -46,11 +52,11 @@ int manageSwitchPokemonDisplay (Config config, SDL_Surface ** text, SDL_Texture 
 
 					} else if (event.key.keysym.sym == config.up) {
 
-						(*rectangleCurseur).y -= ((*rectangleCurseur).y == 110) ? - 80 * 5 : 80;
+						(*rectangleCurseur).y -= ((*rectangleCurseur).y == 110) ? - 80 * number : 80;
 
 					} else if (event.key.keysym.sym == config.down) {
 
-						(*rectangleCurseur).y += ((*rectangleCurseur).y == 110 + 80 * 5) ? - 80 * 5 : 80;
+						(*rectangleCurseur).y += ((*rectangleCurseur).y == 110 + 80 * number) ? - 80 * number : 80;
 
 					} else if (event.key.keysym.sym == config.validate) {
 
@@ -66,7 +72,7 @@ int manageSwitchPokemonDisplay (Config config, SDL_Surface ** text, SDL_Texture 
         default:
           break;
       }
-			if (updatePokeball (text, textureText, font, rectangleCurseur, rectangleSwitch, rectangle, player, surfacePokemon, surfaceCurseur, textureCurseur, surfaceSwitch, textureSwitch, renderer))
+			if (updatePokeball (number, text, textureText, font, rectangleCurseur, rectangleSwitch, rectangle, player, surfacePokemon, surfaceCurseur, textureCurseur, surfaceSwitch, textureSwitch, renderer))
 				return 1;
     }
   }
@@ -74,12 +80,12 @@ int manageSwitchPokemonDisplay (Config config, SDL_Surface ** text, SDL_Texture 
   return 0;
 }
 
-int updatePokeball (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, SDL_Rect * rectangleCurseur, SDL_Rect * rectangleSwitch, SDL_Rect rectangle[6], Pokemon player[6], SDL_Surface ** surfacePokemon, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Surface ** surfaceSwitch, SDL_Texture ** textureSwitch, SDL_Renderer ** renderer) {
+int updatePokeball (int number, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, SDL_Rect * rectangleCurseur, SDL_Rect * rectangleSwitch, SDL_Rect rectangle[6], Pokemon player[6], SDL_Surface ** surfacePokemon, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Surface ** surfaceSwitch, SDL_Texture ** textureSwitch, SDL_Renderer ** renderer) {
 
 	if (updateRenderer(textureSwitch, renderer, rectangleSwitch))
 		return 1;
 
-	if (displaySixPokemon (text, textureText, font, player, rectangle, surfacePokemon, renderer))
+	if (displaySixPokemon (number, text, textureText, font, player, rectangle, surfacePokemon, renderer))
 		return 1;
 
 	if (updateRenderer(textureCurseur, renderer, rectangleCurseur))
@@ -90,13 +96,13 @@ int updatePokeball (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font **
 	return 0;
 }
 
-int displaySixPokemon (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, Pokemon player[6], SDL_Rect rectangle[6], SDL_Surface ** surfacePokemon, SDL_Renderer ** renderer) {
+int displaySixPokemon (int number, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, Pokemon player[6], SDL_Rect rectangle[6], SDL_Surface ** surfacePokemon, SDL_Renderer ** renderer) {
 
 	char * request;
 	SDL_Rect rectanglePV;
 	SDL_Color black = {0, 0, 0};
 
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i <= number; i++) {
 
 		if (strcmp(player[i].name, "")) {
 			if (player[i].img == NULL) {
@@ -142,7 +148,6 @@ int manageSwitchPokemon (Config config, TTF_Font ** font, Pokemon player[6], SDL
   SDL_Surface * surfacePokemon = NULL;
 	SDL_Surface * text = NULL;
 	SDL_Texture * textureText = NULL;
-
 
 	int retour = switchDisplay(config, &text, &textureText, font, player, &surfacePokemon, &surfaceCurseur, &textureCurseur, &surfaceSwitch, &textureSwitch, renderer);
 	closeSwitchPokemon(&text, &textureText, &surfacePokemon, &surfaceCurseur, &textureCurseur, &surfaceSwitch, &textureSwitch);
