@@ -717,6 +717,3 @@ INSERT INTO TRAINER (ID, Name, PokeDollar, Pokeball, Potion, Revive) VALUE (1, "
 INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE (1, 1, 0, 1, "Spectrum", 0);
 INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE (2, 1, 0, 1, "Abra", 0);
 INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE (3, 1, 0, 1, "Rapion", 0);
-INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE (4, 1, 0, 1, "Chetiflor", 0);
-INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE (5, 1, 0, 1, "Barloche", 0);
-INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE (6, 1, 0, 1, "Boustiflor", 0);

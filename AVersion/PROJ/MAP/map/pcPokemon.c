@@ -218,7 +218,7 @@ int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font,
 					} else if (event.key.keysym.sym == config.up) {
 
             if (min == 0 || (*rectangleCurseur).y != 350) {
-              (*rectangleCurseur).y -= ((*rectangleCurseur).y == 350)? - 100 * 4 : 100;
+              (*rectangleCurseur).y -= ((*rectangleCurseur).y == 350)? - 100 * (((number - min) - ((*rectangleCurseur).x - 500) / 100) / 9) : 100;
             } else {
               min -= 9;
               max -= (max == number)? (max % 9): 9;
