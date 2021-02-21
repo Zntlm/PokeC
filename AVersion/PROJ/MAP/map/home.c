@@ -115,8 +115,6 @@ int manageEventHomeGame (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Ren
             nextCase = MatriceHome((*rectanglePlayer).x, (*rectanglePlayer).y-60);
             if (nextCase == 1){
               (*rectanglePlayer).y -= 60;
-              if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
-                return 1;
             }else if(nextCase==2){
                   managePcDisplay(0, mysql, font, config, renderer);
             }else if(nextCase==3){
@@ -126,8 +124,6 @@ int manageEventHomeGame (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Ren
             nextCase = MatriceHome((*rectanglePlayer).x, (*rectanglePlayer).y+60);
             if (nextCase == 1){
               (*rectanglePlayer).y += 60;
-              if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
-                return 1;
             }else if(nextCase==2){
                   managePcDisplay(0, mysql, font, config, renderer);
             }else if(nextCase==3){
@@ -137,8 +133,6 @@ int manageEventHomeGame (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Ren
             nextCase = MatriceHome((*rectanglePlayer).x+60, (*rectanglePlayer).y);
             if (nextCase == 1){
               (*rectanglePlayer).x += 60;
-              if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
-                return 1;
             }else if (nextCase==2){
                   managePcDisplay(0, mysql, font, config, renderer);
             }else if(nextCase==3){
@@ -148,14 +142,14 @@ int manageEventHomeGame (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Ren
             nextCase = MatriceHome((*rectanglePlayer).x-60, (*rectanglePlayer).y);
             if (nextCase == 1){
               (*rectanglePlayer).x -= 60;
-              if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
-                return 1;
             }else if(nextCase==2){
                   managePcDisplay(0, mysql, font, config, renderer);
             }else if(nextCase==3){
                  return 0;
             }
           }
+          if (updateMainHomeDisplay (renderer, textureHome, rectangleHome, texturePlayer, rectanglePlayer))
+            return 1;
           break;
 
         case SDL_QUIT:

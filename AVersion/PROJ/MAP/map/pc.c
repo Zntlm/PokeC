@@ -277,8 +277,23 @@ int manageEventPc (int * potion, int * pokeball, int * revive, int retrun, MYSQL
                     break;
                   }
                 break;
+                case 325:
+                  switch ((*rectangleCurseurPc).y) {
+                    case 480:
+                      managePcPokemon (mysql, font, config, renderer);
+                    break;
+
+                    case 578:
+                      return 0;
+                    break;
+                  }
+                break;
+
+                default:
+                break;
             }
           }
+          SDL_RenderClear(*renderer);
           if (updateMainPcDisplay (*potion, *pokeball, *revive, mysql, text, textureText, font, texturePc, textureCurseurPc, renderer, rectanglePc, rectangleCurseurPc))
                 return 1;
           break;
