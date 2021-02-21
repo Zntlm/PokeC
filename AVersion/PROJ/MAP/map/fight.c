@@ -170,12 +170,12 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 								} else if (tmp == 13) {
 									action = 1;
 									if (rand()%2) {
-										if (catchPokemon(adv, mysql))
+										if (deleteItem ("Pokeball", mysql))
 											return 1;
+										return catchPokemon(adv, mysql);
 									}
 									if (deleteItem ("Pokeball", mysql))
 										return 1;
-									return 0;
 								}
 								break;
 
@@ -196,7 +196,9 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 						while (tmp != pokemonPlayer[*actu].pvActuel) {
 							if (updateFightDisplay (surfacePokemonPlayer, mysql, &(pokemonPlayer[*actu]), *adv, text, font, renderer, rectanglePokemonPlayer, rectanglePokemonAdv, rectangleBackground, textureBackground, texturePokemonAdv, texturePokemonPlayer, textureText))
 								return 1;
-							pokemonPlayer[*actu].pvActuel -= 1;
+							pokemonPlayer[*actu].pvActuel -= pokemonPlayer[*actu].pv / 10;
+							if (pokemonPlayer[*actu].pvActuel < tmp)
+								pokemonPlayer[*actu].pvActuel = tmp;
 							SDL_Delay(1000/60);
 						}
 					}
@@ -419,7 +421,9 @@ int manageChoseAtack (Config config, SDL_Surface ** surfacePokemonPlayer, int ac
 						while (tmp != (*adv).pvActuel) {
 							if (updateFightDisplay (surfacePokemonPlayer, mysql, &(pokemonPlayer[actu]), *adv, text, font, renderer, rectanglePokemonPlayer, rectanglePokemonAdv, rectangleBackground, textureBackground, texturePokemonAdv, texturePokemonPlayer, textureText))
 								return 1;
-							(*adv).pvActuel -= 1;
+							(*adv).pvActuel -= (*adv).pv / 10;
+							if ((*adv).pvActuel < tmp)
+								(*adv).pvActuel = tmp;
 							SDL_Delay(1000/60);
 						}
 

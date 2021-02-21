@@ -217,37 +217,31 @@ int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font,
 
 					} else if (event.key.keysym.sym == config.up) {
 
-            if (number >= 9 *5){
+            if (min == 0 || (*rectangleCurseur).y != 350) {
               (*rectangleCurseur).y -= ((*rectangleCurseur).y == 350)? - 100 * 4 : 100;
             } else {
-              (*rectangleCurseur).y -= ((*rectangleCurseur).y == 350)? - 100 * ((number - ((*rectangleCurseur).x - 500) / 100) / 9) : 100;
+              min -= 9;
+              max -= (max == number)? (max % 9): 9;
             }
 
 					} else if (event.key.keysym.sym == config.down) {
 
-            if (number >= 9 * 5){
-              (*rectangleCurseur).y += ((*rectangleCurseur).y == 350 + 4 * 100)? - 100 * 4 : 100;
+            if (max == number || (*rectangleCurseur).y != 750) {
+              (*rectangleCurseur).y += ((*rectangleCurseur).y == 350 + 100 * (((number - min) - ((*rectangleCurseur).x - 500) / 100) / 9))? - 100 * (((number - min) - ((*rectangleCurseur).x - 500) / 100) / 9) : 100;
             } else {
-              (*rectangleCurseur).y += ((*rectangleCurseur).y == 350 + 100 * ((number - ((*rectangleCurseur).x - 500) / 100) / 9))? - 100 * ((number - ((*rectangleCurseur).x - 500) / 100) / 9) : 100;
+              min += 9;
+              max += (max + 9 <= number) ? 9 : number - max;
             }
 
 					} else if (event.key.keysym.sym == config.right) {
 
-            if (number >= 9 * 5){
-              (*rectangleCurseur).x += ((*rectangleCurseur).x == 600 + 8 * 100)? - 100 * 8:100;
-            } else {
-              tmp = (number - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1 > 8)? 8 : number - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1;
-              (*rectangleCurseur).x += ((*rectangleCurseur).x == 600 + tmp * 100)? - 100 * tmp:100;
-            }
+            tmp = ((number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1 > 8)? 8 : (number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1;
+            (*rectangleCurseur).x += ((*rectangleCurseur).x == 600 + tmp * 100)? - 100 * tmp:100;
 
 					} else if (event.key.keysym.sym == config.left) {
 
-            if (number >= 9 * 5){
-              (*rectangleCurseur).x -= ((*rectangleCurseur).x == 600)? - 100 * 8:100;
-            } else {
-              tmp = (number - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1 > 8)? 8 : number - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1;
-              (*rectangleCurseur).x -= ((*rectangleCurseur).x == 600)? - 100 * tmp:100;
-            }
+            tmp = ((number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1 > 8)? 8 : (number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1;
+            (*rectangleCurseur).x -= ((*rectangleCurseur).x == 600)? - 100 * tmp:100;
 
 					} else if (event.key.keysym.sym == config.validate) {
 
