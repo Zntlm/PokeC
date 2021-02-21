@@ -137,11 +137,12 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 									tmp = manageSwitchPokemon (config, font, pokemonPlayer, renderer);
 									if (tmp == 1)
 										return 1;
-								} while (pokemonPlayer[tmp % 10].pvActuel == 0);
+								} while (pokemonPlayer[tmp % 10].pvActuel == 0 && tmp != 0);
 
-								*actu = tmp % 10;
-								action = 1;
-
+								if (tmp != 0) {
+									*actu = tmp % 10;
+									action = 1;
+								}
 								break;
 
 							case 2: // item
@@ -149,6 +150,7 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 								if (tmp == 1)
 									return 1;
 								if (tmp == 11){
+									action = 1;
 									tmp = manageSwitchPokemon (config, font, pokemonPlayer, renderer);
 									if (pokemonPlayer[tmp % 10].pvActuel != 0 && pokemonPlayer[tmp % 10].pvActuel != pokemonPlayer[tmp % 10].pv) {
 										pokemonPlayer[tmp % 10].pvActuel += pokemonPlayer[tmp % 10].pv / 4;
@@ -158,6 +160,7 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 									if (deleteItem ("Potion", mysql))
 										return 1;
 								} else if (tmp == 12) {
+									action = 1;
 									tmp = manageSwitchPokemon (config, font, pokemonPlayer, renderer);
 									if (pokemonPlayer[tmp % 10].pvActuel == 0) {
 										pokemonPlayer[tmp % 10].pvActuel += pokemonPlayer[tmp % 10].pv / 2;
@@ -165,6 +168,7 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 									if (deleteItem ("Revive", mysql))
 										return 1;
 								} else if (tmp == 13) {
+									action = 1;
 									if (rand()%2) {
 										if (catchPokemon(adv, mysql))
 											return 1;
@@ -173,7 +177,6 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 										return 1;
 									return 0;
 								}
-								action = 1;
 								break;
 
 							case 3: // run

@@ -142,8 +142,8 @@ int manageSwitchPokemon (Config config, TTF_Font ** font, Pokemon player[6], SDL
   SDL_Surface * surfacePokemon = NULL;
 	SDL_Surface * text = NULL;
 	SDL_Texture * textureText = NULL;
-  //SDL_Surface * surfaceValidate = NULL;
-  //SDL_Texture * textureValidate = NULL;
+
+
 	int retour = switchDisplay(config, &text, &textureText, font, player, &surfacePokemon, &surfaceCurseur, &textureCurseur, &surfaceSwitch, &textureSwitch, renderer);
 	closeSwitchPokemon(&text, &textureText, &surfacePokemon, &surfaceCurseur, &textureCurseur, &surfaceSwitch, &textureSwitch);
 
