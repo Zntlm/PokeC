@@ -7,7 +7,7 @@ int switchDisplay (Config config, SDL_Surface ** text, SDL_Texture ** textureTex
 	SDL_Rect rectangle[6];
 	int number = 0;
 
-	while (strcmp(player[number].name, "")) {
+	while (strcmp(player[number].name, "") && number < 6) {
 		number++;
 	}
 	number--;

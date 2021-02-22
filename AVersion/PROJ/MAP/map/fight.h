@@ -12,7 +12,7 @@
 
 int fightDisplay (Config config, Pokemon tab[6], SDL_Surface ** surfaceChoseAttack, SDL_Texture ** textureChoseAttack, SDL_Surface ** surfaceSelect, SDL_Texture ** textureSelect, SDL_Surface ** surfaceChoseActionFight, SDL_Texture ** textureChoseActionFight, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, MYSQL * mysql, MYSQL_ROW row, SDL_Renderer ** renderer, SDL_Surface ** surfaceBackground, SDL_Texture ** textureBackground, SDL_Surface ** surfacePokemonPlayer, SDL_Texture ** texturePokemonPlayer, SDL_Surface ** surfacePokemonAdv, SDL_Texture ** texturePokemonAdv);
 void closeFightDisplay (Pokemon tab[6], SDL_Surface ** surfaceChoseAttack, SDL_Texture ** textureChoseAttack, SDL_Surface ** surfaceSelect, SDL_Texture ** textureSelect, SDL_Surface ** surfaceChoseActionFight, SDL_Texture ** textureChoseActionFight, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Surface ** text, SDL_Texture ** textureText, SDL_Surface ** surfaceBackground, SDL_Texture ** textureBackground, SDL_Surface ** surfacePokemonPlayer, SDL_Texture ** texturePokemonPlayer, SDL_Surface ** surfacePokemonAdv, SDL_Texture ** texturePokemonAdv);
-int managefight (Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql, MYSQL_ROW row);
+int managefight (Pokemon tab[6], Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql, MYSQL_ROW row);
 int takePokemonUser (MYSQL * mysql, Pokemon * tab);
 int takePokemonAdv (MYSQL * mysql, Pokemon * adv, int lvlPlaye, MYSQL_ROW row);
 int loadDiplayPokemonAdv (SDL_Surface ** surface, SDL_Texture ** texture, SDL_Renderer ** renderer, SDL_Rect * rectangle, MYSQL_ROW row);

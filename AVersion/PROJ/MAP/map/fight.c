@@ -14,9 +14,6 @@ int fightDisplay (Config config, Pokemon tab[6], SDL_Surface ** surfaceChoseAtta
 	SDL_Rect rectangle;
 	SDL_Color black = {0, 0, 0};
 
-	if (takePokemonUser(mysql, tab))
-		return 1;
-
 	if (takePokemonAdv(mysql, &adv, tab[0].lvl, row))
 		return 1;
 
@@ -519,6 +516,10 @@ int displayChoseAttack (SDL_Rect * rectangleChoseAttack, SDL_Rect * rectangleCur
 		return 1;
 
 	for (int i = 0; i < 4; i++) {
+
+		if (!strcmp((*pokemonPlayer).comp[i].name, ""))
+			continue;
+
 		request = malloc(strlen((*pokemonPlayer).comp[i].name) + 1);
 		strcpy(request, (*pokemonPlayer).comp[i].name);
 
@@ -544,8 +545,10 @@ int updateDisplayAtack (SDL_Rect * rectangleChoseAttack, SDL_Rect * rectangleCur
 		return 1;
 
 	for (int i = 0; i < 4; i++) {
-		if (updateRenderer(&(*pokemonPlayer).comp[i].text, renderer, &(rectangleAttack[i])))
-			return 1;
+		if ((*pokemonPlayer).comp[i].text != NULL) {
+			if (updateRenderer(&(*pokemonPlayer).comp[i].text, renderer, &(rectangleAttack[i])))
+				return 1;
+		}
 	}
 	SDL_RenderPresent(*renderer);
 
@@ -906,8 +909,10 @@ int takeComp (MYSQL * mysql, Pokemon * pokemon) {
 
 	for (int j = 0; j < 4; j++) {
 		rowLearn = mysql_fetch_row(resultLearn);
-		if (rowLearn == NULL)
+		if (rowLearn == NULL){
+			strcpy((*pokemon).comp[j].name, "");
 			return 0;
+		}
 
 		requestAttack = malloc(strlen("SELECT * FROM ATTACK WHERE Name=\"\"") + strlen(rowLearn[1]) + 1);
 		sprintf(requestAttack, "SELECT * FROM ATTACK WHERE Name=\"%s\"", rowLearn[1]);
@@ -940,7 +945,7 @@ int takeComp (MYSQL * mysql, Pokemon * pokemon) {
 }
 
 // manage error in homeDisplay
-int managefight (Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql, MYSQL_ROW row) {
+int managefight (Pokemon tab[6], Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql, MYSQL_ROW row) {
 
   SDL_Surface * surfaceBackground = NULL;
   SDL_Surface * surfacePokemonPlayer = NULL;
@@ -958,7 +963,6 @@ int managefight (Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQ
   SDL_Texture * textureSelect = NULL;
   SDL_Surface * surfaceChoseAttack = NULL;
   SDL_Texture * textureChoseAttack = NULL;
-	Pokemon tab[6];
 
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 4; j++){

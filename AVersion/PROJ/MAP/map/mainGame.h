@@ -20,6 +20,6 @@ int updateMainGameDisplay (SDL_Renderer ** renderer, SDL_Texture ** texture, SDL
 int manageMainGame (Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql);
 void closeMainGameDisplay (SDL_Surface ** map, SDL_Texture ** texture, SDL_Surface ** surfacePlayer, SDL_Texture ** texturePlayer);
 int randomAggro (Config config, TTF_Font ** font, SDL_Renderer ** renderer, int nextCase, MYSQL * mysql);
-int randomChoseFight (Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql, const char * type);
+int randomChoseFight (Pokemon tab[6], Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql, const char * type);
 
 #endif

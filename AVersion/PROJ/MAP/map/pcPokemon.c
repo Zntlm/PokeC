@@ -152,6 +152,7 @@ int selectPokemon (int * number, MYSQL * mysql, Pokemon ** listPokemon) {
 			return 1;
 
 		(*listPokemon)[i].pv = atoi(rowStats[0]) * (*listPokemon)[i].lvl;
+		(*listPokemon)[i].pvActuel = (*listPokemon)[i].pv;
 		(*listPokemon)[i].attack = atoi(rowStats[1]) * (*listPokemon)[i].lvl;
 		(*listPokemon)[i].defense = atoi(rowStats[2]) * (*listPokemon)[i].lvl;
 		(*listPokemon)[i].speed = atoi(rowStats[3]) * (*listPokemon)[i].lvl;
@@ -316,10 +317,9 @@ int managePcMenu (TTF_Font ** font, MYSQL * mysql, Pokemon * selected, Config co
 					} else if (event.key.keysym.sym == config.validate) {
 
             if ((*rectangleCurseurMenu).y == 600) {
-
+              return adjWeakness (font, mysql, selected, config, renderer);
             } else if ((*rectangleCurseurMenu).y == 700) {
-              manageChangePokemon (selected, font, config, renderer, mysql);
-              return 0;
+              return manageChangePokemon (selected, font, config, renderer, mysql);
             }
 
 					}
@@ -336,6 +336,50 @@ int managePcMenu (TTF_Font ** font, MYSQL * mysql, Pokemon * selected, Config co
       }
     }
   }
+  return 0;
+}
+
+int adjWeakness (TTF_Font ** font, MYSQL * mysql, Pokemon * selected, Config config, SDL_Renderer ** renderer) {
+
+  Pokemon tab[6];
+	char * request;
+  int numRow;
+	MYSQL_ROW row;
+	MYSQL_RES * result;
+
+  takeTypes(mysql, selected);
+
+  tab[0] = *selected;
+  for (int i = 1; i < 6; i++) {
+    strcpy(tab[i].name, "");
+  }
+
+  request = malloc(strlen("SELECT NameAttack FROM AMPLIFICATOR WHERE NameDefense=\"\"") + strlen(tab[0].type[0]) + 1);
+  sprintf(request, "SELECT NameAttack FROM AMPLIFICATOR WHERE NameDefense=\"%s\"", tab[0].type[0]);
+
+  if (mysql_query(mysql, request)) {
+		free (request);
+		return 1;
+	}
+
+	result = mysql_store_result(mysql);
+  if (result == NULL) {
+    MySQL_PrintError("Error extract résult", *mysql);
+		return 1;
+  }
+
+	numRow = rand() % mysql_num_rows(result);
+
+	for (int i = 0; i < numRow+1; i++) {
+		row = mysql_fetch_row(result);
+	}
+
+  if (takeComp(mysql, tab))
+    return 1;
+
+  if (randomChoseFight (tab, config, font, renderer, mysql, row[0]))
+    return 1;
+
   return 0;
 }
 

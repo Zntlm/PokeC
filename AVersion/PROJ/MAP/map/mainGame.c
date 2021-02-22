@@ -171,26 +171,30 @@ int manageEventMainGame (Config config, TTF_Font ** font, SDL_Renderer ** render
 int randomAggro (Config config, TTF_Font ** font, SDL_Renderer ** renderer, int nextCase, MYSQL * mysql) {
 
   int numRand;
+  Pokemon tab[6];
 
   srand(time(NULL));
   numRand = rand()%2;
+
+	if (takePokemonUser(mysql, tab))
+		return 1;
 
   if(!numRand) {
 
     switch (nextCase) {
       case 3:
-        if (randomChoseFight (config, font, renderer, mysql, "Roche"))
+        if (randomChoseFight (tab, config, font, renderer, mysql, "Roche"))
 		return 1;
         break;
 
       case 4:
-        if (randomChoseFight (config, font, renderer, mysql, "Eau"))
+        if (randomChoseFight (tab, config, font, renderer, mysql, "Eau"))
 		return 1;
         break;
 
       case 5:
-        if (randomChoseFight (config, font, renderer, mysql, "Plante"))
-		return 1;
+        if (randomChoseFight (tab, config, font, renderer, mysql, "Plante"))
+      		return 1;
         break;
 
       default:
@@ -202,7 +206,7 @@ int randomAggro (Config config, TTF_Font ** font, SDL_Renderer ** renderer, int 
 }
 
 // random chose wild pokemon
-int randomChoseFight (Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql, const char * type) {
+int randomChoseFight (Pokemon tab[6], Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql, const char * type) {
 
 	int numRow;
 	char * request;
@@ -231,7 +235,7 @@ int randomChoseFight (Config config, TTF_Font ** font, SDL_Renderer ** renderer,
 		row = mysql_fetch_row(result);
 	}
 
-	if (managefight(config, font, renderer, mysql, row))
+	if (managefight(tab, config, font, renderer, mysql, row))
 		return 1;
 
 	return 0;
