@@ -21,5 +21,10 @@ int manageMainGame (Config config, TTF_Font ** font, SDL_Renderer ** renderer, M
 void closeMainGameDisplay (SDL_Surface ** map, SDL_Texture ** texture, SDL_Surface ** surfacePlayer, SDL_Texture ** texturePlayer);
 int randomAggro (Config config, TTF_Font ** font, SDL_Renderer ** renderer, int nextCase, MYSQL * mysql);
 int randomChoseFight (Pokemon tab[6], Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql, const char * type);
+void closeTP (SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur);
+int manageTP (Config config, SDL_Renderer ** renderer, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer);
+int updateTP (SDL_Renderer ** renderer, SDL_Texture ** textureCurseur, SDL_Rect * rectangleCurseur, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer);
+int manageEventTP (Config config, SDL_Renderer ** renderer, SDL_Texture ** textureCurseur, SDL_Rect * rectangleCurseur, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer);
+int displayTP (Config config, SDL_Renderer ** renderer, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer);
 
 #endif

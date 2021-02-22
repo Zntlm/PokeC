@@ -29,7 +29,7 @@ int displayPc (SDL_Texture ** textureText, SDL_Surface ** text, SDL_Texture ** t
 
   SDL_RenderPresent(*renderer);
 
-  return managePc(text, textureText, font, mysql, textureCurseurMenu, surfaceCurseurMenu, textureMenu, surfaceMenu, textureCurseur, &rectangleCurseur, number, surfacePokemon, listPokemon, config, texturePc, &rectanglePc, renderer);
+  return managePc(text, textureText, font, mysql, textureCurseurMenu, surfaceCurseurMenu, textureMenu, surfaceMenu, textureCurseur, &rectangleCurseur, &number, surfacePokemon, listPokemon, config, texturePc, &rectanglePc, renderer);
 }
 
 int displayStats (Pokemon pokemon, TTF_Font ** font, SDL_Renderer ** renderer, SDL_Surface ** text, SDL_Texture ** textureText) {
@@ -195,11 +195,11 @@ int displayPokemon (SDL_Surface ** surfacePokemon, int min, int max, Pokemon ** 
   return 0;
 }
 
-int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, MYSQL * mysql, SDL_Texture ** textureCurseurMenu, SDL_Surface ** surfaceCurseurMenu, SDL_Texture ** textureMenu, SDL_Surface ** surfaceMenu, SDL_Texture ** textureCurseur, SDL_Rect * rectangleCurseur, int number, SDL_Surface ** surfacePokemon, Pokemon ** listPokemon, Config config, SDL_Texture ** texturePc, SDL_Rect * rectanglePc, SDL_Renderer ** renderer) {
+int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, MYSQL * mysql, SDL_Texture ** textureCurseurMenu, SDL_Surface ** surfaceCurseurMenu, SDL_Texture ** textureMenu, SDL_Surface ** surfaceMenu, SDL_Texture ** textureCurseur, SDL_Rect * rectangleCurseur, int * number, SDL_Surface ** surfacePokemon, Pokemon ** listPokemon, Config config, SDL_Texture ** texturePc, SDL_Rect * rectanglePc, SDL_Renderer ** renderer) {
 
   SDL_bool programLaunched = SDL_TRUE;
   int min = 0;
-  int max = (number > 9*5)? 9*5 : number;
+  int max = (*number > 9*5)? 9*5 : *number;
   int tmp;
 
   while (programLaunched) {
@@ -219,34 +219,34 @@ int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font,
 					} else if (event.key.keysym.sym == config.up) {
 
             if (min == 0 || (*rectangleCurseur).y != 350) {
-              (*rectangleCurseur).y -= ((*rectangleCurseur).y == 350)? - 100 * (((number - min) - ((*rectangleCurseur).x - 500) / 100) / 9) : 100;
+              (*rectangleCurseur).y -= ((*rectangleCurseur).y == 350)? - 100 * (((*number - min) - ((*rectangleCurseur).x - 500) / 100) / 9) : 100;
             } else {
               min -= 9;
-              max -= (max == number)? (max % 9): 9;
+              max -= (max == *number)? (max % 9): 9;
             }
 
 					} else if (event.key.keysym.sym == config.down) {
 
-            if (max == number || (*rectangleCurseur).y != 750) {
-              (*rectangleCurseur).y += ((*rectangleCurseur).y == 350 + 100 * (((number - min) - ((*rectangleCurseur).x - 500) / 100) / 9))? - 100 * (((number - min) - ((*rectangleCurseur).x - 500) / 100) / 9) : 100;
+            if (max == *number || (*rectangleCurseur).y != 750) {
+              (*rectangleCurseur).y += ((*rectangleCurseur).y == 350 + 100 * (((*number - min) - ((*rectangleCurseur).x - 500) / 100) / 9))? - 100 * (((*number - min) - ((*rectangleCurseur).x - 500) / 100) / 9) : 100;
             } else {
               min += 9;
-              max += (max + 9 <= number) ? 9 : number - max;
+              max += (max + 9 <= *number) ? 9 : *number - max;
             }
 
 					} else if (event.key.keysym.sym == config.right) {
 
-            tmp = ((number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1 > 8)? 8 : (number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1;
+            tmp = ((*number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1 > 8)? 8 : (*number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1;
             (*rectangleCurseur).x += ((*rectangleCurseur).x == 600 + tmp * 100)? - 100 * tmp:100;
 
 					} else if (event.key.keysym.sym == config.left) {
 
-            tmp = ((number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1 > 8)? 8 : (number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1;
+            tmp = ((*number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1 > 8)? 8 : (*number - min) - ((((*rectangleCurseur).y - 350) / 100) * 9) - 1;
             (*rectangleCurseur).x -= ((*rectangleCurseur).x == 600)? - 100 * tmp:100;
 
 					} else if (event.key.keysym.sym == config.validate) {
 
-            if (displayChoseAction (font, mysql, &((*listPokemon)[min + ((((*rectangleCurseur).y - 350) / 100) * 9) + (((*rectangleCurseur).x - 600) / 100)]), config, textureCurseurMenu, surfaceCurseurMenu, textureMenu, surfaceMenu, renderer))
+            if (displayChoseAction (min + ((((*rectangleCurseur).y - 350) / 100) * 9) + (((*rectangleCurseur).x - 600) / 100), number, font, mysql, listPokemon, config, textureCurseurMenu, surfaceCurseurMenu, textureMenu, surfaceMenu, renderer))
               return 1;
 
 					}
@@ -266,7 +266,7 @@ int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font,
   return 0;
 }
 
-int displayChoseAction (TTF_Font ** font, MYSQL * mysql, Pokemon * selected, Config config, SDL_Texture ** textureCurseurMenu, SDL_Surface ** surfaceCurseurMenu, SDL_Texture ** textureMenu, SDL_Surface ** surfaceMenu, SDL_Renderer ** renderer) {
+int displayChoseAction (int selected, int * number, TTF_Font ** font, MYSQL * mysql, Pokemon ** listPokemon, Config config, SDL_Texture ** textureCurseurMenu, SDL_Surface ** surfaceCurseurMenu, SDL_Texture ** textureMenu, SDL_Surface ** surfaceMenu, SDL_Renderer ** renderer) {
 
   SDL_Rect rectangleMenu;
   SDL_Rect rectangleCurseurMenu;
@@ -285,10 +285,10 @@ int displayChoseAction (TTF_Font ** font, MYSQL * mysql, Pokemon * selected, Con
 
   SDL_RenderPresent(*renderer);
 
-  return managePcMenu(font, mysql, selected, config, textureMenu, &rectangleMenu, textureCurseurMenu, &rectangleCurseurMenu, renderer);
+  return managePcMenu(selected, number, font, mysql, listPokemon, config, textureMenu, &rectangleMenu, textureCurseurMenu, &rectangleCurseurMenu, renderer);
 }
 
-int managePcMenu (TTF_Font ** font, MYSQL * mysql, Pokemon * selected, Config config, SDL_Texture ** textureMenu, SDL_Rect * rectangleMenu, SDL_Texture ** textureCurseurMenu, SDL_Rect * rectangleCurseurMenu, SDL_Renderer ** renderer) {
+int managePcMenu (int selected, int * number, TTF_Font ** font, MYSQL * mysql, Pokemon ** listPokemon, Config config, SDL_Texture ** textureMenu, SDL_Rect * rectangleMenu, SDL_Texture ** textureCurseurMenu, SDL_Rect * rectangleCurseurMenu, SDL_Renderer ** renderer) {
 
   SDL_bool programLaunched = SDL_TRUE;
 
@@ -317,9 +317,11 @@ int managePcMenu (TTF_Font ** font, MYSQL * mysql, Pokemon * selected, Config co
 					} else if (event.key.keysym.sym == config.validate) {
 
             if ((*rectangleCurseurMenu).y == 600) {
-              return adjWeakness (font, mysql, selected, config, renderer);
+              if (adjWeakness (font, mysql, &((*listPokemon)[selected]), config, renderer))
+                return 1;
+              return selectPokemon (number, mysql, listPokemon);
             } else if ((*rectangleCurseurMenu).y == 700) {
-              return manageChangePokemon (selected, font, config, renderer, mysql);
+              return manageChangePokemon (&((*listPokemon)[selected]), font, config, renderer, mysql);
             }
 
 					}

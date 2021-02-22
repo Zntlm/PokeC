@@ -148,6 +148,13 @@ int manageEventMainGame (Config config, TTF_Font ** font, SDL_Renderer ** render
 						if (manageMenuDisplay (texture, texturePlayer, renderer, rectangle, rectanglePlayer))
 							return 1;
 
+					} else if (event.key.keysym.sym == config.validate) {
+
+            nextCase = matriceMain((*rectanglePlayer).x, (*rectanglePlayer).y);
+						if (nextCase == 2) {
+              if (manageTP (config, renderer, texture, rectangle, texturePlayer, rectanglePlayer))
+                return 1;
+            }
 					}
 
 					if (updateMainGameDisplay (renderer, texture, rectangle, texturePlayer, rectanglePlayer))
@@ -165,6 +172,118 @@ int manageEventMainGame (Config config, TTF_Font ** font, SDL_Renderer ** render
     }
   }
   return 0;
+}
+
+int displayTP (Config config, SDL_Renderer ** renderer, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer) {
+
+  SDL_Rect rectangleCurseur;
+
+  if (loadBMP("../img/curseurPcPokemon.bmp", surfaceCurseur))
+    return 1;
+
+  if (displayAll(textureCurseur, surfaceCurseur, &rectangleCurseur, renderer, (*rectanglePlayer).x, (*rectanglePlayer).y, 32, 32))
+    return 1;
+
+  SDL_RenderPresent(*renderer);
+
+  return manageEventTP(config, renderer, textureCurseur, &rectangleCurseur, texture, rectangle, texturePlayer, rectanglePlayer);
+}
+
+int manageEventTP (Config config, SDL_Renderer ** renderer, SDL_Texture ** textureCurseur, SDL_Rect * rectangleCurseur, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer) {
+
+  SDL_bool programLaunched = SDL_TRUE;
+  int nextCase;
+
+  while (programLaunched) {
+
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event)) {
+
+      switch (event.type) {
+
+        case SDL_KEYDOWN:
+
+					if (event.key.keysym.sym == config.escape) {
+
+						programLaunched = SDL_FALSE;
+
+					} else if (event.key.keysym.sym == config.up) {
+
+            if ((*rectangleCurseur).y != 0)
+              (*rectangleCurseur).y -= 32;
+
+					} else if (event.key.keysym.sym == config.down) {
+
+            if ((*rectangleCurseur).y != 32 * 28)
+              (*rectangleCurseur).y += 32;
+
+					}  else if (event.key.keysym.sym == config.right) {
+
+            if ((*rectangleCurseur).x != 32 * 49)
+              (*rectangleCurseur).x += 32;
+
+					}  else if (event.key.keysym.sym == config.left) {
+
+            if ((*rectangleCurseur).x != 0)
+              (*rectangleCurseur).x -= 32;
+
+					} else if (event.key.keysym.sym == config.validate) {
+
+            nextCase = matriceMain((*rectangleCurseur).x, (*rectangleCurseur).y);
+						if (nextCase == 2) {
+              (*rectanglePlayer).x = (*rectangleCurseur).x;
+              (*rectanglePlayer).y = (*rectangleCurseur).y;
+            }
+
+            return 0;
+					}
+          if (updateTP(renderer, textureCurseur, rectangleCurseur, texture, rectangle, texturePlayer, rectanglePlayer))
+            return 1;
+          break;
+
+        case SDL_QUIT:
+          programLaunched = SDL_FALSE;
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+  return 0;
+}
+
+int updateTP (SDL_Renderer ** renderer, SDL_Texture ** textureCurseur, SDL_Rect * rectangleCurseur, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer) {
+
+  if (updateMainGameDisplay (renderer, texture, rectangle, texturePlayer, rectanglePlayer))
+    return 1;
+
+  if (updateRenderer(textureCurseur, renderer, rectangleCurseur))
+    return 1;
+
+  SDL_RenderPresent(*renderer);
+
+  return 0;
+}
+
+int manageTP (Config config, SDL_Renderer ** renderer, SDL_Texture ** texture, SDL_Rect * rectangle, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer) {
+
+  SDL_Surface * surfaceCurseur = NULL;
+  SDL_Texture * textureCurseur = NULL;
+
+  int curseur = displayTP (config, renderer, &surfaceCurseur, &textureCurseur, texture, rectangle, texturePlayer, rectanglePlayer);
+  closeTP (&surfaceCurseur, &textureCurseur);
+
+  return curseur;
+}
+
+void closeTP (SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur) {
+
+  if (*surfaceCurseur != NULL)
+    SDL_FreeSurface(*surfaceCurseur);
+  if (*textureCurseur != NULL)
+    SDL_DestroyTexture(*textureCurseur);
 }
 
 // rendom attack by wild pokemon
