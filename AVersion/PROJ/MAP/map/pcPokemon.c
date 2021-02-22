@@ -249,6 +249,11 @@ int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font,
             if (displayChoseAction (min + ((((*rectangleCurseur).y - 350) / 100) * 9) + (((*rectangleCurseur).x - 600) / 100), number, font, mysql, listPokemon, config, textureCurseurMenu, surfaceCurseurMenu, textureMenu, surfaceMenu, renderer))
               return 1;
 
+					} else if (event.key.keysym.sym == config.inventory) {
+
+            if (manageChangeName (font, renderer))
+              return 1;
+
 					}
           if (updatePc((*listPokemon)[min + ((((*rectangleCurseur).y - 350) / 100) * 9) + (((*rectangleCurseur).x - 600) / 100)], font, text, textureText, textureCurseur, rectangleCurseur, min, max, surfacePokemon, listPokemon, texturePc, rectanglePc, renderer))
             return 1;

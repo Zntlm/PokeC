@@ -1,5 +1,5 @@
-#ifndef _PCPOKEMON_H_
-#define _PCPOKEMON_H_
+#ifndef _CHANGENAME_H_
+#define _CHANGENAME_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +8,7 @@
 #include "manage.h"
 #include "chosePokemon.h"
 #include "mainGame.h"
+#include "changeName.h"
 
 int displayPc (SDL_Texture ** textureText, SDL_Surface ** text, SDL_Texture ** textureCurseurMenu, SDL_Surface ** surfaceCurseurMenu, SDL_Texture ** textureMenu, SDL_Surface ** surfaceMenu, SDL_Surface ** surfaceCurseur, SDL_Texture ** textureCurseur, SDL_Surface ** surfacePokemon, Pokemon ** listPokemon, MYSQL * mysql, TTF_Font ** font, Config config, SDL_Renderer ** renderer, SDL_Surface ** surfacePc, SDL_Texture ** texturePc);
 int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font, MYSQL * mysql, SDL_Texture ** textureCurseurMenu, SDL_Surface ** surfaceCurseurMenu, SDL_Texture ** textureMenu, SDL_Surface ** surfaceMenu, SDL_Texture ** textureCurseur, SDL_Rect * rectangleCurseur, int * number, SDL_Surface ** surfacePokemon, Pokemon ** listPokemon, Config config, SDL_Texture ** texturePc, SDL_Rect * rectanglePc, SDL_Renderer ** renderer);
