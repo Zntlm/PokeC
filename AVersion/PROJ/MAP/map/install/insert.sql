@@ -15,7 +15,6 @@ INSERT INTO TYPE (Name) VALUE ("Spectre");
 INSERT INTO TYPE (Name) VALUE ("Dragon");
 INSERT INTO TYPE (Name) VALUE ("Tenebre");
 INSERT INTO TYPE (Name) VALUE ("Acier");
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Normal", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Normal", "Feu", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Normal", "Eau", 1);
@@ -33,7 +32,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Normal", "Spec
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Normal", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Normal", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Normal", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Feu", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Feu", "Feu", 0.5);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Feu", "Eau", 2);
@@ -51,7 +49,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Feu", "Spectre
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Feu", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Feu", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Feu", "Acier", 0.5);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Eau", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Eau", "Feu", 0.5);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Eau", "Eau", 0.5);
@@ -69,7 +66,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Eau", "Spectre
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Eau", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Eau", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Eau", "Acier", 0.5);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Plante", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Plante", "Feu", 2);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Plante", "Eau", 0.5);
@@ -87,7 +83,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Plante", "Spec
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Plante", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Plante", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Plante", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Electrik", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Electrik", "Feu", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Electrik", "Eau", 1);
@@ -105,7 +100,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Electrik", "Sp
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Electrik", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Electrik", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Electrik", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Glace", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Glace", "Feu", 2);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Glace", "Eau", 1);
@@ -123,7 +117,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Glace", "Spect
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Glace", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Glace", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Glace", "Acier", 2);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Combat", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Combat", "Feu", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Combat", "Eau", 1);
@@ -141,7 +134,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Combat", "Spec
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Combat", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Combat", "Tenebre", 0.5);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Combat", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Poison", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Poison", "Feu", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Poison", "Eau", 1);
@@ -159,7 +151,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Poison", "Spec
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Poison", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Poison", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Poison", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Sol", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Sol", "Feu", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Sol", "Eau", 2);
@@ -177,7 +168,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Sol", "Spectre
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Sol", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Sol", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Sol", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Vol", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Vol", "Feu", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Vol", "Eau", 1);
@@ -195,7 +185,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Vol", "Spectre
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Vol", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Vol", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Vol", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Psy", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Psy", "Feu", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Psy", "Eau", 1);
@@ -213,7 +202,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Psy", "Spectre
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Psy", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Psy", "Tenebre", 2);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Psy", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Insecte", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Insecte", "Feu", 2);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Insecte", "Eau", 1);
@@ -231,7 +219,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Insecte", "Spe
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Insecte", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Insecte", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Insecte", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Roche", "Normal", 0.5);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Roche", "Feu", 0.5);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Roche", "Eau", 2);
@@ -249,7 +236,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Roche", "Spect
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Roche", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Roche", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Roche", "Acier", 2);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Spectre", "Normal", 0);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Spectre", "Feu", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Spectre", "Eau", 1);
@@ -267,7 +253,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Spectre", "Spe
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Spectre", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Spectre", "Tenebre", 2);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Spectre", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Dragon", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Dragon", "Feu", 0.5);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Dragon", "Eau", 0.5);
@@ -285,7 +270,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Dragon", "Spec
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Dragon", "Dragon", 2);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Dragon", "Tenebre", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Dragon", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Tenebre", "Normal", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Tenebre", "Feu", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Tenebre", "Eau", 1);
@@ -303,7 +287,6 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Tenebre", "Spe
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Tenebre", "Dragon", 1);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Tenebre", "Tenebre", 0.5);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Tenebre", "Acier", 1);
-
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Acier", "Normal", 0.5);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Acier", "Feu", 2);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Acier", "Eau", 1);
@@ -321,13 +304,11 @@ INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Acier", "Spect
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Acier", "Dragon", 0.5);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Acier", "Tenebre", 0.5);
 INSERT INTO AMPLIFICATOR (NameAttack, NameDefense, Value) VALUE ("Acier", "Acier", 0.5);
-
 INSERT INTO LOCATION (Name) VALUE ("Route5");
 INSERT INTO LOCATION (Name) VALUE ("Route4");
 INSERT INTO LOCATION (Name) VALUE ("Route13");
 INSERT INTO LOCATION (Name) VALUE ("Route14");
 INSERT INTO LOCATION (Name) VALUE ("Route16");
-
 INSERT INTO POKEMON (Name, PV, Attack, Defense, Speed) VALUE ("Taupiqueur", 10, 55, 25, 95);
 INSERT INTO POKEMON (Name, PV, Attack, Defense, Speed) VALUE ("Kraknoix", 45, 100, 45, 10);
 INSERT INTO POKEMON (Name, PV, Attack, Defense, Speed) VALUE ("Griknot", 58, 70, 45, 42);
@@ -371,7 +352,6 @@ INSERT INTO POKEMON (Name, PV, Attack, Defense, Speed) VALUE ("Abo", 35, 60, 44,
 INSERT INTO POKEMON (Name, PV, Attack, Defense, Speed) VALUE ("Chetiflor", 50, 75, 35, 70);
 INSERT INTO POKEMON (Name, PV, Attack, Defense, Speed) VALUE ("Barloche", 50, 48, 43, 60);
 INSERT INTO POKEMON (Name, PV, Attack, Defense, Speed) VALUE ("Barbicha", 110, 78, 73, 60);
-
 INSERT INTO BELONGSTO (NamePokemon, NameType) VALUE ("Taupiqueur", "Sol");
 INSERT INTO BELONGSTO (NamePokemon, NameType) VALUE ("Kraknoix", "Sol");
 INSERT INTO BELONGSTO (NamePokemon, NameType) VALUE ("Griknot", "Sol");
@@ -435,7 +415,6 @@ INSERT INTO BELONGSTO (NamePokemon, NameType) VALUE ("Barloche", "Eau");
 INSERT INTO BELONGSTO (NamePokemon, NameType) VALUE ("Barloche", "Sol");
 INSERT INTO BELONGSTO (NamePokemon, NameType) VALUE ("Barbicha", "Eau");
 INSERT INTO BELONGSTO (NamePokemon, NameType) VALUE ("Barbicha", "Sol");
-
 INSERT INTO ATTACK (Name, Power, Acc, NameType) VALUE ("Griffe", 40, 100, "Normal");
 INSERT INTO ATTACK (Name, Power, Acc, NameType) VALUE ("Coud'Boue", 20, 100, "Sol");
 INSERT INTO ATTACK (Name, Power, Acc, NameType) VALUE ("Ampleur", 60, 100, "Sol");
@@ -496,7 +475,6 @@ INSERT INTO ATTACK (Name, Power, Acc, NameType) VALUE ("Megafouet", 120, 85, "Pl
 INSERT INTO ATTACK (Name, Power, Acc, NameType) VALUE ("Plaie-Croix", 80, 100, "Insecte");
 INSERT INTO ATTACK (Name, Power, Acc, NameType) VALUE ("Eclair", 40, 100, "Electrik");
 INSERT INTO ATTACK (Name, Power, Acc, NameType) VALUE ("Lance-Boue", 40, 100, "Sol");
-
 INSERT INTO LEARN (NamePokemon, NameAttack, LVL) VALUE ("Taupiqueur", "Griffe", 1);
 INSERT INTO LEARN (NamePokemon, NameAttack, LVL) VALUE ("Taupiqueur", "Coud'Boue", 7);
 INSERT INTO LEARN (NamePokemon, NameAttack, LVL) VALUE ("Taupiqueur", "Ampleur", 14);
@@ -666,7 +644,6 @@ INSERT INTO LEARN (NamePokemon, NameAttack, LVL) VALUE ("Barbicha", "Coud'Boue",
 INSERT INTO LEARN (NamePokemon, NameAttack, LVL) VALUE ("Barbicha", "Pistolet a O", 7);
 INSERT INTO LEARN (NamePokemon, NameAttack, LVL) VALUE ("Barbicha", "Boue-Bombe", 13);
 INSERT INTO LEARN (NamePokemon, NameAttack, LVL) VALUE ("Barbicha", "Hydrocanon", 18);
-
 INSERT INTO LIVES (NamePokemon, NameLocation) VALUE ("Taupiqueur", "Route13");
 INSERT INTO LIVES (NamePokemon, NameLocation) VALUE ("Kraknoix", "Route13");
 INSERT INTO LIVES (NamePokemon, NameLocation) VALUE ("Griknot", "Route13");
@@ -712,7 +689,6 @@ INSERT INTO LIVES (NamePokemon, NameLocation) VALUE ("Chetiflor", "Route14");
 INSERT INTO LIVES (NamePokemon, NameLocation) VALUE ("Rapion", "Route14");
 INSERT INTO LIVES (NamePokemon, NameLocation) VALUE ("Barloche", "Route14");
 INSERT INTO LIVES (NamePokemon, NameLocation) VALUE ("Barbicha", "Route14");
-
 INSERT INTO TRAINER (ID, Name, PokeDollar, Pokeball, Potion, Revive) VALUE (1, "user", 0, 0, 0, 0);
 INSERT INTO POKEBALL (NamePerso, ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE ("Spectrum", 1, 1, 0, 1, "Spectrum", 0);
 INSERT INTO POKEBALL (NamePerso, ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE ("Abra", 2, 1, 0, 1, "Abra", 0);

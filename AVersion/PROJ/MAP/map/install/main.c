@@ -11,10 +11,10 @@ void cutCommande (char * buffer, char ** commande);
 int main (int argc, char ** argv) {
 
 	char ** commande = NULL;
-	char buffer[3][64] = {"apt install libsdl2-dev", "apt install libsdl2-ttf-dev", "apt install libmariadb-dev"};
+	char buffer[5][128] = {"apt install libsdl2-dev", "apt install libsdl2-ttf-dev", "apt install libmariadb-dev", "make", "./test/createdb"};
 	int count = 0;
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 5; i++) {
 
     count = countSpace(buffer[i]);
 
