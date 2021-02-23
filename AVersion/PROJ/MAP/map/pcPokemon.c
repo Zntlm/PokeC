@@ -105,7 +105,7 @@ int selectPokemon (int * number, MYSQL * mysql, Pokemon ** listPokemon) {
   int i = 0;
 
   request = malloc(strlen("SELECT ID, LVL, XP, NamePokemon, NamePerso FROM POKEBALL WHERE IDTrainer=1 AND PC=1") + 1);
-  strcpy(request, "SELECT ID, LVL, XP, NamePokemon FROM POKEBALL WHERE IDTrainer=1 AND PC=1");
+  strcpy(request, "SELECT ID, LVL, XP, NamePokemon, NamePerso FROM POKEBALL WHERE IDTrainer=1 AND PC=1");
 
   if (mysql_query(mysql, request)){
       free(request);
@@ -246,7 +246,7 @@ int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font,
             (*rectangleCurseur).x -= ((*rectangleCurseur).x == 600)? - 100 * tmp:100;
 
 					} else if (event.key.keysym.sym == config.validate) {
-            
+
             if (displayChoseAction (min + ((((*rectangleCurseur).y - 350) / 100) * 9) + (((*rectangleCurseur).x - 600) / 100), number, font, mysql, listPokemon, config, textureCurseurMenu, surfaceCurseurMenu, textureMenu, surfaceMenu, renderer))
               return 1;
 
