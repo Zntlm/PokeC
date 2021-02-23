@@ -15,6 +15,9 @@ int displayPc (SDL_Texture ** textureText, SDL_Surface ** text, SDL_Texture ** t
   if (selectPokemon (&number, mysql, listPokemon))
     return 1;
 
+  if (number == 0)
+    return 0;
+
   if (displayPokemon (surfacePokemon, 0, (number > 9*5)? 9*5 : number, listPokemon, renderer))
     return 1;
 
@@ -506,8 +509,10 @@ int managePcPokemon (MYSQL * mysql, TTF_Font ** font, Config config, SDL_Rendere
   SDL_Surface * text = NULL;
   SDL_Texture * textureText = NULL;
   Pokemon * listPokemon;
+  int pc;
 
-  int pc = displayPc (&textureText, &text, &textureCurseurMenu, &surfaceCurseurMenu, &textureMenu, &surfaceMenu, &surfaceCurseur, &textureCurseur, &surfacePokemon, &listPokemon, mysql, font, config, renderer, &surfacePc, &texturePc);
+
+  pc = displayPc (&textureText, &text, &textureCurseurMenu, &surfaceCurseurMenu, &textureMenu, &surfaceMenu, &surfaceCurseur, &textureCurseur, &surfacePokemon, &listPokemon, mysql, font, config, renderer, &surfacePc, &texturePc);
   closePcPokemon (&textureText, &text, &textureCurseurMenu, &surfaceCurseurMenu, &textureMenu, &surfaceMenu, &surfaceCurseur, &textureCurseur, &surfacePokemon, &listPokemon, &surfacePc, &texturePc);
 
   return pc;

@@ -88,6 +88,8 @@ int defineKey (Config * config, SDL_Texture ** texture, SDL_Surface ** page, SDL
 		if (displayAll(texture, page, &rectangle, renderer, 0, 0, -1, -1))
 			return 1;
 
+		SDL_RenderPresent(*renderer);
+
 		key = pressedKey();
 		fprintf(fileConfig, "%s : %d\n", nameAction[i], key);
 	}

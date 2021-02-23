@@ -301,8 +301,8 @@ int catchPokemon (int pc, Pokemon * adv, MYSQL * mysql) {
   if (row == NULL)
     return 1;
 
-	request = malloc(strlen("INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE (, , 0, 1, \"\", )") + strlen((*adv).name) + sizeof(int) * 3 + 1);
-  sprintf(request, "INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC) VALUE (%d, %d, 0, 1, \"%s\", %d)", atoi(row[0]) + 1, (*adv).lvl, (*adv).name, pc);
+	request = malloc(strlen("INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC, NamePerso) VALUE (, , 0, 1, \"\", , \"\")") + strlen((*adv).name) * 2 + sizeof(int) * 3 + 1);
+  sprintf(request, "INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC, NamePerso) VALUE (%d, %d, 0, 1, \"%s\", %d, \"%s\")", atoi(row[0]) + 1, (*adv).lvl, (*adv).name, pc, (*adv).name);
 
   if (mysql_query(mysql, request)){
       free(request);
