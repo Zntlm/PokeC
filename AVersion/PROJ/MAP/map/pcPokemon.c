@@ -38,8 +38,8 @@ int displayStats (Pokemon pokemon, TTF_Font ** font, SDL_Renderer ** renderer, S
 	SDL_Rect rectangle;
   SDL_Color black = {0, 0, 0};
 
-	request = malloc(strlen("NAME : \n") + strlen(pokemon.name) + 1);
-	sprintf(request, "NAME : %s\n", pokemon.name);
+	request = malloc(strlen("NAME : \n") + strlen(pokemon.namePerso) + 1);
+	sprintf(request, "NAME : %s\n", pokemon.namePerso);
 
 	*text = TTF_RenderText_Blended(*font, request, black);
 
@@ -104,7 +104,7 @@ int selectPokemon (int * number, MYSQL * mysql, Pokemon ** listPokemon) {
 	char * request;
   int i = 0;
 
-  request = malloc(strlen("SELECT ID, LVL, XP, NamePokemon FROM POKEBALL WHERE IDTrainer=1 AND PC=1") + 1);
+  request = malloc(strlen("SELECT ID, LVL, XP, NamePokemon, NamePerso FROM POKEBALL WHERE IDTrainer=1 AND PC=1") + 1);
   strcpy(request, "SELECT ID, LVL, XP, NamePokemon FROM POKEBALL WHERE IDTrainer=1 AND PC=1");
 
   if (mysql_query(mysql, request)){
@@ -129,6 +129,7 @@ int selectPokemon (int * number, MYSQL * mysql, Pokemon ** listPokemon) {
     (*listPokemon)[i].lvl = atoi(row[1]);
     (*listPokemon)[i].xp = atoi(row[2]);
     strcpy((*listPokemon)[i].name, row[3]);
+    strcpy((*listPokemon)[i].namePerso, row[4]);
     (*listPokemon)[i].img = NULL;
 
     request = malloc(strlen("SELECT PV, Attack, Defense, Speed FROM POKEMON WHERE Name=\"\"") + strlen((*listPokemon)[i].name) + 1);
@@ -245,13 +246,13 @@ int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font,
             (*rectangleCurseur).x -= ((*rectangleCurseur).x == 600)? - 100 * tmp:100;
 
 					} else if (event.key.keysym.sym == config.validate) {
-
+            
             if (displayChoseAction (min + ((((*rectangleCurseur).y - 350) / 100) * 9) + (((*rectangleCurseur).x - 600) / 100), number, font, mysql, listPokemon, config, textureCurseurMenu, surfaceCurseurMenu, textureMenu, surfaceMenu, renderer))
               return 1;
 
 					} else if (event.key.keysym.sym == config.inventory) {
 
-            if (manageChangeName (font, renderer))
+            if (manageChangeName (mysql, &((*listPokemon)[min + ((((*rectangleCurseur).y - 350) / 100) * 9) + (((*rectangleCurseur).x - 600) / 100)]), font, renderer))
               return 1;
 
 					}
@@ -434,6 +435,7 @@ int changePokemon (MYSQL * mysql, Pokemon sac, Pokemon * selected) {
   (*selected).lvl = sac.lvl;
   (*selected).xp = sac.xp;
   strcpy((*selected).name, sac.name);
+  strcpy((*selected).namePerso, sac.namePerso);
   (*selected).img = NULL;
 
   return 0;

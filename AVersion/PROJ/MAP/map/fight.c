@@ -618,9 +618,9 @@ int displayPvPokemon (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font 
 	char * request;
 	SDL_Rect rectangleText;
 
-	request = malloc(strlen(pokemonActu.name) + sizeof(int) * 3 + strlen(" LVL :  | PV : /") + 1);
+	request = malloc(strlen(pokemonActu.namePerso) + sizeof(int) * 3 + strlen(" LVL :  | PV : /") + 1);
 
-	sprintf(request, "%s LVL : %d | PV : %d/%d", pokemonActu.name, pokemonActu.lvl, pokemonActu.pvActuel, pokemonActu.pv);
+	sprintf(request, "%s LVL : %d | PV : %d/%d", pokemonActu.namePerso, pokemonActu.lvl, pokemonActu.pvActuel, pokemonActu.pv);
 	*text = TTF_RenderText_Blended(*font, request, black);
 
 	free (request);
@@ -737,7 +737,7 @@ int takePokemonUser (MYSQL * mysql, Pokemon * tab) {
 	int i;
 	int j;
 
-	if (mysql_query(mysql, "SELECT NamePokemon, ID, lvl, XP FROM POKEBALL WHERE IDTrainer=1 AND PC=0 ORDER BY LVL DESC")){
+	if (mysql_query(mysql, "SELECT NamePokemon, ID, lvl, XP, NamePerso FROM POKEBALL WHERE IDTrainer=1 AND PC=0 ORDER BY LVL DESC")){
 	    MySQL_PrintError("Error query", *mysql);
 	    return 1;
 	}
@@ -759,6 +759,7 @@ int takePokemonUser (MYSQL * mysql, Pokemon * tab) {
 		strcpy(tab[i].id, row[1]);
 		tab[i].lvl = atoi(row[2]);
 		tab[i].xp = atoi(row[3]);
+		strcpy(tab[i].namePerso, (row[4] == NULL) ? row[0] : row[4]);
 
 		request = malloc(strlen("SELECT PV, Attack, Defense, Speed FROM POKEMON WHERE Name=\"\"") + strlen(tab[i].name) + 1);
 		sprintf(request, "SELECT PV, Attack, Defense, Speed FROM POKEMON WHERE Name=\"%s\"", tab[i].name);
@@ -830,6 +831,7 @@ int takePokemonAdv (MYSQL * mysql, Pokemon * adv, int lvlPlayer, MYSQL_ROW row) 
 		return 1;
 
 	strcpy((*adv).name, row[0]);
+	strcpy((*adv).namePerso, row[0]);
 	(*adv).pv = atoi(row[1]) * (*adv).lvl;
 	(*adv).pvActuel = atoi(row[1]) * (*adv).lvl;
 	(*adv).attack = atoi(row[2]) * (*adv).lvl;

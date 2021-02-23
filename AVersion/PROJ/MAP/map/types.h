@@ -15,6 +15,7 @@ typedef struct Attack {
 typedef struct Pokemon {
 
 	char name[100];
+	char namePerso[32];
 	char type[2][50];
 	int pv;
 	int pvActuel;
