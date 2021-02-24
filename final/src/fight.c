@@ -169,8 +169,7 @@ int manageEventChoseActionFight (Config config, SDL_Surface ** surfacePokemonPla
 									if (rand()%2) {
 										if (deleteItem ("Pokeball", mysql))
 											return 1;
-										for (i = 0; i < 6 && strcmp(pokemonPlayer[i].name, ""); i++);
-										return catchPokemon(i/6, adv, mysql);
+										return catchPokemon(adv, mysql);
 									}
 									if (deleteItem ("Pokeball", mysql))
 										return 1;
@@ -275,11 +274,35 @@ int deleteItem (const char * item, MYSQL * mysql) {
 	return 0;
 }
 
-int catchPokemon (int pc, Pokemon * adv, MYSQL * mysql) {
+int catchPokemon (Pokemon * adv, MYSQL * mysql) {
 
 	MYSQL_ROW row;
 	MYSQL_RES * result;
 	char * request;
+	MYSQL_ROW rowPC;
+	MYSQL_RES * resultPC;
+	char * requestPC;
+	int i = 0;
+
+	requestPC = malloc(strlen("SELECT ID FROM POKEBALL WHERE PC=0") + 1);
+	strcpy(requestPC, "SELECT ID FROM POKEBALL WHERE PC=0");
+
+	if (mysql_query(mysql, requestPC)){
+      free(requestPC);
+      MySQL_PrintError("Error query", *mysql);
+      return 1;
+  }
+  free(requestPC);
+
+  resultPC = mysql_store_result(mysql);
+  if (resultPC == NULL) {
+    MySQL_PrintError("Error extract résult", *mysql);
+    return 1;
+  }
+
+  while ((rowPC = mysql_fetch_row(resultPC))) {
+		i++;
+	}
 
 	request = malloc(strlen("SELECT MAX(ID) FROM POKEBALL") + 1);
   strcpy(request, "SELECT MAX(ID) FROM POKEBALL");
@@ -302,7 +325,7 @@ int catchPokemon (int pc, Pokemon * adv, MYSQL * mysql) {
     return 1;
 
 	request = malloc(strlen("INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC, NamePerso) VALUE (, , 0, 1, \"\", , \"\")") + strlen((*adv).name) * 2 + sizeof(int) * 3 + 1);
-  sprintf(request, "INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC, NamePerso) VALUE (%d, %d, 0, 1, \"%s\", %d, \"%s\")", atoi(row[0]) + 1, (*adv).lvl, (*adv).name, pc, (*adv).name);
+  sprintf(request, "INSERT INTO POKEBALL (ID, LVL, XP, IDTrainer, NamePokemon, PC, NamePerso) VALUE (%d, %d, 0, 1, \"%s\", %d, \"%s\")", atoi(row[0]) + 1, (*adv).lvl, (*adv).name, i/6, (*adv).name);
 
   if (mysql_query(mysql, request)){
       free(request);

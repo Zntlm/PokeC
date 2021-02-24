@@ -252,6 +252,8 @@ int managePc (SDL_Surface ** text, SDL_Texture ** textureText, TTF_Font ** font,
 
             if (displayChoseAction (min + ((((*rectangleCurseur).y - 350) / 100) * 9) + (((*rectangleCurseur).x - 600) / 100), number, font, mysql, listPokemon, config, textureCurseurMenu, surfaceCurseurMenu, textureMenu, surfaceMenu, renderer))
               return 1;
+            if (max - min != 9*5)
+              max = *number - min;
 
 					} else if (event.key.keysym.sym == config.inventory) {
 
@@ -328,6 +330,7 @@ int managePcMenu (int selected, int * number, TTF_Font ** font, MYSQL * mysql, P
             if ((*rectangleCurseurMenu).y == 600) {
               if (adjWeakness (font, mysql, &((*listPokemon)[selected]), config, renderer))
                 return 1;
+              free(*listPokemon);
               return selectPokemon (number, mysql, listPokemon);
             } else if ((*rectangleCurseurMenu).y == 700) {
               return manageChangePokemon (&((*listPokemon)[selected]), font, config, renderer, mysql);

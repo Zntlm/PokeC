@@ -29,7 +29,7 @@ int updateFightDisplay (SDL_Surface ** surfacePokemonPlayer, MYSQL * mysql, Poke
 int finishFight (MYSQL * mysql, Pokemon * pokemonPlayer, int lvlAdv);
 int takeComp (MYSQL * mysql, Pokemon * pokemon);
 int takeTypes (MYSQL * mysql, Pokemon * pokemon);
-int catchPokemon (int pc, Pokemon * adv, MYSQL * mysql);
+int catchPokemon (Pokemon * adv, MYSQL * mysql);
 int deleteItem (const char * item, MYSQL * mysql);
 
 #endif

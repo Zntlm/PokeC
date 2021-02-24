@@ -328,6 +328,7 @@ int randomAggro (Config config, TTF_Font ** font, SDL_Renderer ** renderer, int 
 int randomChoseFight (Pokemon tab[6], Config config, TTF_Font ** font, SDL_Renderer ** renderer, MYSQL * mysql, const char * type) {
 
 	int numRow;
+  int nbRow;
 	char * request;
 	MYSQL_ROW row;
 	MYSQL_RES * result;
@@ -348,7 +349,10 @@ int randomChoseFight (Pokemon tab[6], Config config, TTF_Font ** font, SDL_Rende
 		return 1;
   }
 
-	numRow = rand() % mysql_num_rows(result);
+  nbRow = mysql_num_rows(result);
+  if (nbRow == 0)
+    return 0;
+	numRow = rand() % nbRow;
 
 	for (int i = 0; i < numRow+1; i++) {
 		row = mysql_fetch_row(result);
