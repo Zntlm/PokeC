@@ -1735,7 +1735,6 @@ int reminderDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfaceReminder, SD
 int manageEventReminder (SDL_Texture ** textureReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder, SDL_Rect * rectangleCurseurReminder, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
 
 SDL_bool programLaunched = SDL_TRUE;
-	//int nextCase;
 
 	// event
 	while (programLaunched) {
@@ -1750,7 +1749,7 @@ SDL_bool programLaunched = SDL_TRUE;
 					switch (event.key.keysym.sym) {
 
 						case SDLK_ESCAPE:
-							programLaunched = SDL_FALSE; //Close the pc
+							programLaunched = SDL_FALSE; //Close the pcReminder
 							break;
 					}
 					if (updateMainReminderDisplay (textureReminder, textureCurseurReminder, renderer, rectangleReminder, rectangleCurseurReminder, texturePlayer, rectanglePlayer, textureHome, rectangleHome))
@@ -1782,10 +1781,10 @@ int loadDiplayCurseurReminder (SDL_Surface ** surfaceCurseurReminder, SDL_Textur
 }
 
 
-// load and display reminder
+// load and display pcReminder
 int loadDiplayReminder (SDL_Surface ** surfaceReminder, SDL_Texture ** textureReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder) {
 
-  // load pc Reminder
+  // load pcReminder
   if (loadBMP("../img/pcRappel.bmp", surfaceReminder))
     return 1;
   if (displayAll (textureReminder, surfaceReminder, rectangleReminder, renderer, 275, 100, 950, 600))
@@ -1793,7 +1792,7 @@ int loadDiplayReminder (SDL_Surface ** surfaceReminder, SDL_Texture ** textureRe
   return 0;
 }
 
-// refresh reminder
+// refresh pcReminder
 int updateMainReminderDisplay (SDL_Texture ** textureReminder, SDL_Texture ** textureCurseurReminder, SDL_Renderer ** renderer, SDL_Rect * rectangleReminder, SDL_Rect * rectangleCurseurReminder, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
 
   SDL_RenderClear(*renderer);
