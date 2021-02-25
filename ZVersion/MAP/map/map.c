@@ -1103,7 +1103,6 @@ int homeDisplay(SDL_Renderer ** renderer, SDL_Texture ** texturePlayer, SDL_Surf
   // HOME
   // load and display home
   if (loadDiplayHome(renderer, surfaceHome, textureHome, &rectangleHome))
-
     return 1;
 
   //PERSONNAGE
