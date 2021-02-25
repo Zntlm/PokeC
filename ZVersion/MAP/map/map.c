@@ -1367,7 +1367,7 @@ int loadDiplayCurseurPc (SDL_Surface ** surfaceCurseuPc, SDL_Texture ** textureC
 // load and display pc
 int loadDiplayPc (SDL_Surface ** surfacePc, SDL_Texture ** texturePc, SDL_Renderer ** renderer, SDL_Rect * rectanglePc) {
 
-  // load home page
+  // load pc page
   if (loadBMP("../img/pcMenu.bmp", surfacePc))
     return 1;
 
@@ -1395,7 +1395,6 @@ int loadDiplayPc (SDL_Surface ** surfacePc, SDL_Texture ** texturePc, SDL_Render
 int manageEventPc (SDL_Renderer ** renderer, SDL_Surface ** surfacePc, SDL_Texture ** texturePc, SDL_Rect * rectanglePc, SDL_Surface ** surfaceCurseuPc, SDL_Texture ** textureCurseurPc, SDL_Rect * rectangleCurseurPc, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome, SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion, SDL_Rect * rectanglePotion, SDL_Rect * rectangleCurseurPotion) {
 
   SDL_bool programLaunched = SDL_TRUE;
-  //int nextCase;
 
   // event
   while (programLaunched) {
