@@ -1181,7 +1181,7 @@ int manageEventHomeGame (SDL_Renderer ** renderer, SDL_Surface ** surfaceHome, S
               programLaunched = SDL_FALSE; //Close Home
               break;
 
-            case SDLK_UP://Vers le haut
+            case SDLK_UP://Go up
               nextCase = MatriceHome((*rectanglePlayer).x, (*rectanglePlayer).y-60);
               if (nextCase == 1){
                 (*rectanglePlayer).y -= 60;
@@ -1194,7 +1194,7 @@ int manageEventHomeGame (SDL_Renderer ** renderer, SDL_Surface ** surfaceHome, S
               }
               break;
 
-            case SDLK_DOWN://Vers le bas
+            case SDLK_DOWN://Go Down
               nextCase = MatriceHome((*rectanglePlayer).x, (*rectanglePlayer).y+60);
               if (nextCase == 1){
                 (*rectanglePlayer).y += 60;
@@ -1207,7 +1207,7 @@ int manageEventHomeGame (SDL_Renderer ** renderer, SDL_Surface ** surfaceHome, S
               }
               break;
 
-            case SDLK_RIGHT://Go to the Right
+            case SDLK_RIGHT://To the Right
               nextCase = MatriceHome((*rectanglePlayer).x+60, (*rectanglePlayer).y);
               if (nextCase == 1){
                 (*rectanglePlayer).x += 60;
@@ -1220,7 +1220,7 @@ int manageEventHomeGame (SDL_Renderer ** renderer, SDL_Surface ** surfaceHome, S
               }
               break;
 
-            case SDLK_LEFT: //Go to the left
+            case SDLK_LEFT: //To the left
               nextCase = MatriceHome((*rectanglePlayer).x-60, (*rectanglePlayer).y);
               if (nextCase == 1){
                 (*rectanglePlayer).x -= 60;
@@ -1470,7 +1470,7 @@ int manageEventPc (SDL_Renderer ** renderer, SDL_Surface ** surfacePc, SDL_Textu
                 }
               break;
 
-            case SDLK_LEFT: //The left
+            case SDLK_LEFT: //To the left
                 switch((*rectangleCurseurPc).x){
 
                     case 625:
@@ -1976,6 +1976,7 @@ void closePokeballsDisplay (SDL_Surface ** surfacePokeballs, SDL_Texture ** text
   if (*textureCurseurPokeballs != NULL)
     SDL_DestroyTexture(*textureCurseurPokeballs);
 }
+
 
 /********************************************
 *****************MANAGE ERROR****************
