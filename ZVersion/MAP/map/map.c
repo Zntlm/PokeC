@@ -1608,7 +1608,6 @@ int potionDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfacePotion, SDL_Te
 int manageEventPotion (SDL_Texture ** texturePotion, SDL_Texture ** textureCurseurPotion, SDL_Renderer ** renderer, SDL_Rect * rectanglePotion, SDL_Rect * rectangleCurseurPotion, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
 
 	SDL_bool programLaunched = SDL_TRUE;
-	//int nextCase;
 
 	// event
 	while (programLaunched) {
@@ -1623,7 +1622,7 @@ int manageEventPotion (SDL_Texture ** texturePotion, SDL_Texture ** textureCurse
 					switch (event.key.keysym.sym) {
 
 						case SDLK_ESCAPE:
-							programLaunched = SDL_FALSE; //Close the pc
+							programLaunched = SDL_FALSE; //Close the pcPotion
 							break;
 					}
 					if (updateMainPotionDisplay (texturePotion, textureCurseurPotion, renderer, rectanglePotion, rectangleCurseurPotion, texturePlayer, rectanglePlayer, textureHome, rectangleHome))
@@ -1654,7 +1653,7 @@ int loadDiplayCurseurPotion (SDL_Surface ** surfaceCurseurPotion, SDL_Texture **
 }
 
 
-// load and display potion
+// load and display pcPotion
 int loadDiplayPotion (SDL_Surface ** surfacePotion, SDL_Texture ** texturePotion, SDL_Renderer ** renderer, SDL_Rect * rectanglePotion) {
 
   // load pcPotion
