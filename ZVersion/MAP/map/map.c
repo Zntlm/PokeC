@@ -1871,8 +1871,7 @@ int pokeballsDisplay(SDL_Renderer ** renderer, SDL_Surface ** surfacePokeballs, 
 
 int manageEventPokeballs (SDL_Texture ** texturePokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs, SDL_Rect * rectangleCurseurPokeballs, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome){
 SDL_bool programLaunched = SDL_TRUE;
-	//int nextCase;
-
+    
 	// event
 	while (programLaunched) {
 
@@ -1886,7 +1885,7 @@ SDL_bool programLaunched = SDL_TRUE;
 					switch (event.key.keysym.sym) {
 
 						case SDLK_ESCAPE:
-							programLaunched = SDL_FALSE; //Close the pc
+							programLaunched = SDL_FALSE; //Close the pcPokeballs
 							break;
 					}
 					if (updateMainPokeballsDisplay (texturePokeballs, textureCurseurPokeballs, renderer, rectanglePokeballs, rectangleCurseurPokeballs, texturePlayer, rectanglePlayer, textureHome, rectangleHome))
@@ -1918,7 +1917,7 @@ int loadDiplayCurseurPokeballs (SDL_Surface ** surfaceCurseurPokeballs, SDL_Text
 }
 
 
-// load and display Pokeballs
+// load and display pcPokeballs
 int loadDiplayPokeballs (SDL_Surface ** surfacePokeballs, SDL_Texture ** texturePokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs) {
 
   // load pc Pokeballs
@@ -1930,7 +1929,7 @@ int loadDiplayPokeballs (SDL_Surface ** surfacePokeballs, SDL_Texture ** texture
 }
 
 
-// refresh Pokeballs
+// refresh pcPokeballs
 int updateMainPokeballsDisplay (SDL_Texture ** texturePokeballs, SDL_Texture ** textureCurseurPokeballs, SDL_Renderer ** renderer, SDL_Rect * rectanglePokeballs, SDL_Rect * rectangleCurseurPokeballs, SDL_Texture ** texturePlayer, SDL_Rect * rectanglePlayer, SDL_Texture ** textureHome, SDL_Rect * rectangleHome) {
 
   SDL_RenderClear(*renderer);
